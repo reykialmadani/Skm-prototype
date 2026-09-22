@@ -3,83 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — Prototype Website SKM</title>
+  <title>Login — Portal Prototype SKM</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="../assets/js/data.js"></script>
 </head>
-<body class="public-body" style="display:flex; align-items:center; justify-content:center; padding:20px;">
+<body class="public-body" style="display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px 20px;">
 
-  <div class="skm-card" style="width: 100%; max-width: 440px; padding: 36px 32px; box-shadow: var(--shadow-lg);">
-    <!-- Logo & Header -->
+  <div style="width: 100%; max-width: 900px;">
+    
+    <!-- Branding Header -->
     <div style="text-align: center; margin-bottom: 28px;">
-      <div style="width: 54px; height: 54px; background: var(--color-primary); color: #FFF; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; margin-bottom: 12px; box-shadow: var(--shadow-sm);">
+      <div style="width: 60px; height: 60px; background: var(--color-primary); color: #FFF; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 26px; margin-bottom: 12px; box-shadow: var(--shadow-md);">
         SKM
       </div>
-      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-text);">Masuk ke Portal SKM</h2>
-      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: 4px;">Sistem Informasi Survei Kepuasan Masyarakat</p>
-    </div>
-
-    <!-- Quick Role Fill Bar for Demo -->
-    <div style="background: var(--color-surface); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 20px;">
-      <div style="font-size: 11px; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 6px;">⚡ SIMULASI DEMO AKUN:</div>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="btn btn-outline btn-sm" onclick="quickFillLogin('admin_unit')" style="font-size: 11px; padding: 4px 8px;">Admin Unit</button>
-        <button class="btn btn-outline btn-sm" onclick="quickFillLogin('super_admin')" style="font-size: 11px; padding: 4px 8px;">Super Admin</button>
-        <button class="btn btn-outline btn-sm" onclick="quickFillLogin('enumerator')" style="font-size: 11px; padding: 4px 8px;">Enumerator</button>
-      </div>
-    </div>
-
-    <form id="loginForm" onsubmit="handleLoginSubmit(event)">
-      <div class="form-group">
-        <label for="emailInput">Username / Email</label>
-        <input type="text" id="emailInput" class="form-control" placeholder="Masukkan username atau email" value="budi.disdukcapil@go.id" required>
-      </div>
-
-      <div class="form-group">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <label for="passwordInput" style="margin-bottom:0;">Kata Sandi</label>
-          <a href="./forgot-password.html" style="font-size:12px;">Lupa password?</a>
-        </div>
-        <div style="position:relative;">
-          <input type="password" id="passwordInput" class="form-control" value="password123" required style="padding-right: 40px;">
-          <button type="button" onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--color-text-muted); cursor:pointer;">
-            <i data-lucide="eye" id="eyeIcon" style="width:18px; height:18px;"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="form-group" style="display:flex; align-items:center; gap:8px;">
-        <input type="checkbox" id="rememberMe" checked style="accent-color:var(--color-primary);">
-        <label for="rememberMe" style="font-size:12.5px; margin-bottom:0; font-weight:400; cursor:pointer;">Ingat saya di perangkat ini</label>
-      </div>
-
-      <button type="submit" id="submitBtn" class="btn btn-primary btn-full btn-lg" style="margin-top:10px;">
-        <span>Masuk Sekarang</span>
-      </button>
-    </form>
-
-    <div style="text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border-light);">
-      <p style="font-size: 12px; color: var(--color-text-muted);">
-        Ingin mengisi survei sebagai masyarakat? <a href="./public/landing.html" style="font-weight: 600;">Klik di sini</a>
+      <h1 style="font-size: 24px; font-weight: 800; color: var(--color-text);">Portal Masuk Website SKM</h1>
+      <p style="font-size: 13.5px; color: var(--color-text-muted); margin-top: 4px;">
+        Survei Kepuasan Masyarakat — Silakan pilih role atau gunakan form login untuk menguji alur sistem.
       </p>
     </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px; align-items: start;">
+      
+      <!-- Panel Kiri: Quick Access Role Selector -->
+      <div class="skm-card" style="padding: 28px; box-shadow: var(--shadow-lg);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+          <i data-lucide="zap" style="color:var(--color-primary); width:20px; height:20px;"></i>
+          <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text);">Akses Cepat Mode Role (Quick Login)</h2>
+        </div>
+        <p style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 20px;">
+          Klik salah satu role di bawah ini untuk langsung masuk dan mengeksplorasi alur kerja (workflow) role tersebut:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          
+          <!-- Role 1: Admin Unit -->
+          <div class="skm-card hover-lift" style="padding: 14px 16px; margin-bottom: 0; cursor: pointer; border: 1.5px solid var(--color-primary); background: var(--color-surface-light);" onclick="loginAsRole('admin_unit')">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: var(--color-primary); color: #FFF; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="building-2" style="width:20px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--color-primary-dark);">Admin Unit Layanan</div>
+                  <div style="font-size: 11.5px; color: var(--color-text-muted);">Drs. Budi Santoso (Disdukcapil)</div>
+                </div>
+              </div>
+              <span class="btn btn-primary btn-sm" style="font-size:11px;">Masuk →</span>
+            </div>
+          </div>
+
+          <!-- Role 2: Super Admin -->
+          <div class="skm-card hover-lift" style="padding: 14px 16px; margin-bottom: 0; cursor: pointer; background: var(--color-bg);" onclick="loginAsRole('super_admin')">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: #EBF7EE; color: var(--color-success); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="shield-check" style="width:20px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--color-text);">Super Admin</div>
+                  <div style="font-size: 11.5px; color: var(--color-text-muted);">Indekstat SysAdmin (Level 0)</div>
+                </div>
+              </div>
+              <span class="btn btn-outline btn-sm" style="font-size:11px;">Masuk →</span>
+            </div>
+          </div>
+
+          <!-- Role 3: Enumerator -->
+          <div class="skm-card hover-lift" style="padding: 14px 16px; margin-bottom: 0; cursor: pointer; background: var(--color-bg);" onclick="loginAsRole('enumerator')">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: #FEF9EB; color: var(--color-warning); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="clipboard-list" style="width:20px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--color-text);">Enumerator Lapangan</div>
+                  <div style="font-size: 11.5px; color: var(--color-text-muted);">Rizky Ramadhan (Survey Officer)</div>
+                </div>
+              </div>
+              <span class="btn btn-outline btn-sm" style="font-size:11px;">Masuk →</span>
+            </div>
+          </div>
+
+          <!-- Role 4: Responden -->
+          <div class="skm-card hover-lift" style="padding: 14px 16px; margin-bottom: 0; cursor: pointer; background: var(--color-bg);" onclick="loginAsRole('public')">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: #EFF6FF; color: var(--color-info); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="smile" style="width:20px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--color-text);">Responden (Publik)</div>
+                  <div style="font-size: 11.5px; color: var(--color-text-muted);">Masyarakat Pengguna Layanan</div>
+                </div>
+              </div>
+              <span class="btn btn-outline btn-sm" style="font-size:11px;">Isi Survei →</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Panel Kanan: Form Login Standar -->
+      <div class="skm-card" style="padding: 28px; box-shadow: var(--shadow-lg);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+          <i data-lucide="key-round" style="color:var(--color-primary); width:20px; height:20px;"></i>
+          <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text);">Form Login Manual</h2>
+        </div>
+
+        <form id="loginForm" onsubmit="handleFormLoginSubmit(event)">
+          <div class="form-group">
+            <label for="emailInput">Username / Email</label>
+            <input type="text" id="emailInput" class="form-control" value="budi.disdukcapil@go.id" placeholder="Masukkan username/email" required>
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <label for="passwordInput" style="margin-bottom:0;">Kata Sandi</label>
+              <a href="./forgot-password.html" style="font-size:12px;">Lupa password?</a>
+            </div>
+            <div style="position:relative;">
+              <input type="password" id="passwordInput" class="form-control" value="password123" required style="padding-right: 40px;">
+              <button type="button" onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--color-text-muted); cursor:pointer;">
+                <i data-lucide="eye" id="eyeIcon" style="width:18px; height:18px;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group" style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="rememberMe" checked style="accent-color:var(--color-primary);">
+            <label for="rememberMe" style="font-size:12.5px; margin-bottom:0; font-weight:400; cursor:pointer;">Ingat saya di perangkat ini</label>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn btn-primary btn-full btn-lg" style="margin-top:10px;">
+            Masuk dengan Akun Manual
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border-light);">
+          <p style="font-size: 12px; color: var(--color-text-muted);">
+            Sistem Informasi Survei Kepuasan Masyarakat v2.0
+          </p>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
   <script src="../assets/js/main.js"></script>
   <script>
-    let selectedRole = 'admin_unit';
+    let activeRole = 'admin_unit';
 
-    function quickFillLogin(role) {
-      selectedRole = role;
-      if (role === 'admin_unit') {
-        document.getElementById('emailInput').value = 'budi.disdukcapil@go.id';
-      } else if (role === 'super_admin') {
-        document.getElementById('emailInput').value = 'admin.indekstat@go.id';
-      } else if (role === 'enumerator') {
-        document.getElementById('emailInput').value = 'rizky.enumerator@go.id';
-      }
-      showToast(`Form diisi untuk role: ${role}`, 'info');
+    function loginAsRole(roleId) {
+      activeRole = roleId;
+      const data = getStoredData();
+      const targetRole = data.roles.find(r => r.id === roleId);
+      if (!targetRole) return;
+
+      data.currentUser.role = targetRole.id;
+      data.currentUser.name = targetRole.user;
+      data.currentUser.roleName = targetRole.label;
+      saveStoredData(data);
+
+      showToast(`Masuk sebagai: ${targetRole.label}`, 'success');
+      setTimeout(() => {
+        window.location.href = targetRole.redirect;
+      }, 500);
     }
 
     function togglePasswordVisibility() {
@@ -95,15 +185,9 @@
       lucide.createIcons();
     }
 
-    function handleLoginSubmit(e) {
+    function handleFormLoginSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.innerHTML = `<span>Memproses...</span>`;
-      btn.disabled = true;
-
-      setTimeout(() => {
-        switchRoleDemo(selectedRole);
-      }, 600);
+      loginAsRole(activeRole);
     }
   </script>
 </body>

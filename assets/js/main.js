@@ -3,7 +3,6 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initDemoSwitcherBar();
   initSidebarActiveState();
   initLucideIcons();
   initModalListeners();
