@@ -158,3 +158,23 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 300);
   }, 3500);
 }
+
+// --------------------------------------------------------------------------
+// 6. Logout Handler
+// --------------------------------------------------------------------------
+function handleLogout() {
+  // Determine the correct relative path to login.html based on current page depth
+  const path = window.location.pathname;
+  let loginPath = './pages/login.html';
+
+  if (path.includes('/pages/admin/') || path.includes('/pages/unit/') || path.includes('/pages/enumerator/') || path.includes('/pages/public/')) {
+    loginPath = '../login.html';
+  } else if (path.includes('/pages/')) {
+    loginPath = './login.html';
+  }
+
+  showToast('Berhasil logout. Mengarahkan ke halaman login...', 'info');
+  setTimeout(() => {
+    window.location.href = loginPath;
+  }, 800);
+}
