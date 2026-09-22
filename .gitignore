@@ -1,0 +1,8 @@
+# Ignore PRD dan seluruh file Markdown (.md)
+*.md
+
+# Temporary and system files
+node_modules/
+.DS_Store
+*.log
+.vscode/
