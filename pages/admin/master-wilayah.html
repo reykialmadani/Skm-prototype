@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Wilayah — Super Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/cascading-select.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">SA</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Super Admin</span>
+          <span class="sidebar-brand-sub">Sistem Informasi SKM</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> System Dashboard
+        </a>
+
+        <div class="nav-section-title">PENGELOLAAN</div>
+        <a href="./users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;"></i> User Management
+        </a>
+        <a href="./master-unit.html" class="nav-item">
+          <i data-lucide="building-2" style="width:18px;"></i> Master Unit Layanan
+        </a>
+        <a href="./master-wilayah.html" class="nav-item active">
+          <i data-lucide="map" style="width:18px;"></i> Master Wilayah
+        </a>
+        <a href="./master-question-bank.html" class="nav-item">
+          <i data-lucide="help-circle" style="width:18px;"></i> Question Bank
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./monitoring.html" class="nav-item">
+          <i data-lucide="activity" style="width:18px;"></i> Monitoring Survei
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Indekstat SysAdmin</span>
+            <span class="user-role">Super Admin Level 0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Master Wilayah Berjenjang</h1>
+          <p>Pengelolaan struktur wilayah administrasi (Provinsi → Kab/Kota → Kecamatan → Desa)</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary btn-sm" onclick="showToast('Fitur impor data BPS disimulasikan', 'info')">
+            <i data-lucide="upload" style="width:16px;"></i> Impor Wilayah (Excel/BPS)
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- Interactive Cascading Select Preview -->
+        <div class="skm-card">
+          <div class="card-header">
+            <span class="card-title"><i data-lucide="sliders"></i> Simulasi Cascading Selector Wilayah</span>
+          </div>
+          <p style="font-size:13px; color:var(--color-text-muted); margin-bottom:18px;">
+            Pilih hierarki wilayah di bawah ini untuk menguji keterhubungan data wilayah berjenjang:
+          </p>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+            <div class="form-group">
+              <label>Provinsi</label>
+              <select id="selectProv" class="form-control"></select>
+            </div>
+            <div class="form-group">
+              <label>Kabupaten / Kota</label>
+              <select id="selectKab" class="form-control"><option value="">-- Pilih Provinsi Dulu --</option></select>
+            </div>
+            <div class="form-group">
+              <label>Kecamatan</label>
+              <select id="selectKec" class="form-control"><option value="">-- Pilih Kab/Kota Dulu --</option></select>
+            </div>
+            <div class="form-group">
+              <label>Kelurahan / Desa</label>
+              <select id="selectDesa" class="form-control"><option value="">-- Pilih Kecamatan Dulu --</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registered Wilayah List -->
+        <div class="skm-card">
+          <div class="card-header">
+            <span class="card-title"><i data-lucide="map-pin"></i> Daftar Wilayah Terdaftar</span>
+          </div>
+          <div class="table-responsive">
+            <table class="skm-table">
+              <thead>
+                <tr>
+                  <th>Kode BPS</th>
+                  <th>Nama Wilayah</th>
+                  <th>Tingkat Hierarki</th>
+                  <th>Induk Wilayah</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>36</code></td><td><strong>Banten</strong></td><td>Provinsi</td><td>—</td><td><span class="badge badge-success">Aktif</span></td></tr>
+                <tr><td><code>3673</code></td><td><strong>Kota Serang</strong></td><td>Kabupaten/Kota</td><td>Banten</td><td><span class="badge badge-success">Aktif</span></td></tr>
+                <tr><td><code>367301</code></td><td><strong>Kecamatan Serang</strong></td><td>Kecamatan</td><td>Kota Serang</td><td><span class="badge badge-success">Aktif</span></td></tr>
+                <tr><td><code>367301001</code></td><td><strong>Kelurahan Kotabaru</strong></td><td>Desa/Kelurahan</td><td>Kecamatan Serang</td><td><span class="badge badge-success">Aktif</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initCascadingWilayahSelect('selectProv', 'selectKab', 'selectKec', 'selectDesa');
+    });
+  </script>
+</body>
+</html>

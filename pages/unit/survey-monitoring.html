@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Response — Admin Unit SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item active">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Monitoring Response & Sample Achievement</h1>
+          <p>Survei Kepuasan Layanan KTP Elektronik & KK 2026</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="showToast('Data respon berhasil direfresh', 'info')">
+            <i data-lucide="refresh-cw" style="width:16px;"></i> Refresh Data Realtime
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Large Progress Bar Card -->
+        <div class="skm-card" style="background:var(--color-surface); border-color:var(--color-border-focus);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <span class="badge badge-success" style="margin-bottom:4px;">STATUS PENGUMPULAN DATA</span>
+              <h2 style="font-size:22px; font-weight:700; color:var(--color-primary-dark);">
+                Capaian Sample Rate: 62%
+              </h2>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:28px; font-weight:800; color:var(--color-primary);">238 / 385</span>
+              <div style="font-size:11.5px; color:var(--color-text-muted);">Target Responden Minimal</div>
+            </div>
+          </div>
+
+          <div class="progress-bar-container" style="height:14px;">
+            <div class="progress-bar-fill" style="width:62%;"></div>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="grid-4">
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#EBF7EE; color:var(--color-success);"><i data-lucide="check-circle-2"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">238</div>
+              <div class="metric-label">Respon Selesai (Completed)</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#FEF9EB; color:var(--color-warning);"><i data-lucide="clock"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">14</div>
+              <div class="metric-label">Respon Draft / Incomplete</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#EFF6FF; color:var(--color-info);"><i data-lucide="qr-code"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">180</div>
+              <div class="metric-label">Masuk via QR Code</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon"><i data-lucide="user-check"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">58</div>
+              <div class="metric-label">Masuk via Form Enumerator</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Trend Line Chart & Recent Responses Table -->
+        <div class="grid-2">
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="trending-up"></i> Tren Harian Masuknya Respon (7 Hari Terakhir)</span>
+            </div>
+            <div style="height: 240px;">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="list"></i> Respon Terbaru Masuk</span>
+            </div>
+            <div class="table-responsive">
+              <table class="skm-table">
+                <thead>
+                  <tr>
+                    <th>Waktu</th>
+                    <th>Kanal</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>22 Sep 2026, 16:20</td>
+                    <td>QR Code (Mobile)</td>
+                    <td><span class="badge badge-success">Selesai</span></td>
+                  </tr>
+                  <tr>
+                    <td>22 Sep 2026, 16:05</td>
+                    <td>Form Enumerator</td>
+                    <td><span class="badge badge-success">Selesai</span></td>
+                  </tr>
+                  <tr>
+                    <td>22 Sep 2026, 15:45</td>
+                    <td>QR Code (Mobile)</td>
+                    <td><span class="badge badge-warning">Draft</span></td>
+                  </tr>
+                  <tr>
+                    <td>22 Sep 2026, 15:10</td>
+                    <td>Short Link WA</td>
+                    <td><span class="badge badge-success">Selesai</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('trendChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['16 Sep', '17 Sep', '18 Sep', '19 Sep', '20 Sep', '21 Sep', '22 Sep'],
+          datasets: [{
+            label: 'Jumlah Respon',
+            data: [22, 35, 28, 45, 50, 38, 42],
+            borderColor: '#D25353',
+            backgroundColor: 'rgba(210, 83, 83, 0.1)',
+            fill: true,
+            tension: 0.3,
+            borderWidth: 3,
+            pointBackgroundColor: '#D25353'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: '#F9ECE0' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Question Bank — Super Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">SA</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Super Admin</span>
+          <span class="sidebar-brand-sub">Sistem Informasi SKM</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> System Dashboard
+        </a>
+
+        <div class="nav-section-title">PENGELOLAAN</div>
+        <a href="./users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;"></i> User Management
+        </a>
+        <a href="./master-unit.html" class="nav-item">
+          <i data-lucide="building-2" style="width:18px;"></i> Master Unit Layanan
+        </a>
+        <a href="./master-wilayah.html" class="nav-item">
+          <i data-lucide="map" style="width:18px;"></i> Master Wilayah
+        </a>
+        <a href="./master-question-bank.html" class="nav-item active">
+          <i data-lucide="help-circle" style="width:18px;"></i> Question Bank
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./monitoring.html" class="nav-item">
+          <i data-lucide="activity" style="width:18px;"></i> Monitoring Survei
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Indekstat SysAdmin</span>
+            <span class="user-role">Super Admin Level 0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Master Question Bank SKM</h1>
+          <p>Bank pertanyaan standar sesuai 9 Unsur Pelayanan Publik (PermenPANRB No. 14/2017)</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary btn-sm" onclick="openModal('questionModal')">
+            <i data-lucide="plus-circle" style="width:16px;"></i> Tambah Pertanyaan Standar
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <div class="skm-card">
+          <div class="table-responsive">
+            <table class="skm-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Unsur Pelayanan</th>
+                  <th>Teks Pertanyaan</th>
+                  <th>Tipe Jawaban</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="qbTableBody">
+                <!-- Dynamically populated from data.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Tambah Pertanyaan -->
+  <div class="modal-overlay" id="questionModal">
+    <div class="modal-card">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="help-circle"></i> Tambah Pertanyaan Standar Baru</span>
+        <button class="btn btn-ghost btn-sm" data-close-modal>✕</button>
+      </div>
+      <form onsubmit="handleSaveQuestion(event)">
+        <div class="form-group">
+          <label>Kategori Unsur Pelayanan</label>
+          <select id="qbUnsur" class="form-control" required>
+            <option value="U1 - Persyaratan">U1 - Persyaratan</option>
+            <option value="U2 - Prosedur">U2 - Prosedur</option>
+            <option value="U3 - Waktu Pelayanan">U3 - Waktu Pelayanan</option>
+            <option value="U4 - Biaya/Tarif">U4 - Biaya/Tarif</option>
+            <option value="U5 - Produk Spesifikasi">U5 - Produk Spesifikasi</option>
+            <option value="U6 - Kompetensi Pelaksana">U6 - Kompetensi Pelaksana</option>
+            <option value="U7 - Perilaku Pelaksana">U7 - Perilaku Pelaksana</option>
+            <option value="U8 - Penanganan Pengaduan">U8 - Penanganan Pengaduan</option>
+            <option value="U9 - Sarana & Prasarana">U9 - Sarana & Prasarana</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Teks Pertanyaan Kuesioner</label>
+          <textarea id="qbTeks" class="form-control" rows="3" placeholder="Tuliskan teks pertanyaan secara ramah dan jelas..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Tipe Skala Jawaban</label>
+          <select id="qbTipe" class="form-control" required>
+            <option value="skala_4">Skala 4 Tingkat (Sangat Tidak Puas s/d Sangat Puas)</option>
+            <option value="terbuka">Isian Teks Terbuka / Masukan</option>
+          </select>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Ke Bank</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderQB();
+    });
+
+    function renderQB() {
+      const questions = getStoredData().questionBank;
+      const tbody = document.getElementById('qbTableBody');
+      tbody.innerHTML = questions.map(q => `
+        <tr>
+          <td><code>${q.id}</code></td>
+          <td><span class="badge badge-warning">${q.unsur}</span></td>
+          <td><strong>${q.teks}</strong></td>
+          <td><span class="badge badge-info">${q.tipe === 'skala_4' ? 'Skala 4 Emoji' : 'Teks Terbuka'}</span></td>
+          <td>
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Edit pertanyaan ${q.id}', 'info')"><i data-lucide="edit-2" style="width:14px;"></i> Edit</button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function handleSaveQuestion(e) {
+      e.preventDefault();
+      const unsur = document.getElementById('qbUnsur').value;
+      const teks = document.getElementById('qbTeks').value;
+      const tipe = document.getElementById('qbTipe').value;
+
+      const data = getStoredData();
+      data.questionBank.push({
+        id: `Q-00${data.questionBank.length + 1}`,
+        unsur: unsur,
+        teks: teks,
+        tipe: tipe,
+        opsi: ["Kurang", "Cukup", "Baik", "Sangat Baik"]
+      });
+      saveStoredData(data);
+
+      closeModal('questionModal');
+      renderQB();
+      showToast('Pertanyaan baru berhasil ditambahkan ke Bank! 🎉', 'success');
+    }
+  </script>
+</body>
+</html>

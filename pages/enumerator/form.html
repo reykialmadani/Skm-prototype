@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Wawancara Offline — Enumerator SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/rating-scale.js"></script>
+</head>
+<body class="public-body">
+  
+  <div style="max-width: 500px; margin: 0 auto; min-height: 100vh; background: var(--color-bg); display: flex; flex-direction: column; border-left: 1px solid var(--color-border); border-right: 1px solid var(--color-border);">
+    
+    <!-- Header Form -->
+    <header style="padding: 16px 20px; background: var(--color-bg); border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 36px; z-index: 100;">
+      <a href="./dashboard.html" style="color: var(--color-text);"><i data-lucide="arrow-left" style="width:20px;"></i></a>
+      <div style="text-align: center;">
+        <div style="font-weight: 700; font-size: 14px;">Form Wawancara Offline</div>
+        <div style="font-size: 11px; color: var(--color-text-muted);">Disdukcapil • KTP & KK 2026</div>
+      </div>
+      <!-- Connection Status Badge -->
+      <span class="badge badge-success" style="font-size:10px;"><i data-lucide="wifi" style="width:10px;"></i> Online</span>
+    </header>
+
+    <main style="padding: 20px; flex: 1;">
+      
+      <!-- Auto Metadata -->
+      <div class="skm-card" style="padding:12px 16px; margin-bottom:16px; background:var(--color-surface-light);">
+        <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--color-text-muted);">
+          <span>Petugas: <strong>Rizky Ramadhan</strong></span>
+          <span>Waktu: <strong id="timestampText">22 Sep 2026, 16:30</strong></span>
+        </div>
+      </div>
+
+      <form id="enumForm" onsubmit="handleEnumSubmit(event)">
+        
+        <!-- Data Responden Field -->
+        <div class="skm-card" style="padding:16px; margin-bottom:16px;">
+          <h4 style="font-size:14px; font-weight:700; margin-bottom:12px;">Profil Responden Wawancara</h4>
+          
+          <div class="form-group">
+            <label>Nama Responden (Opsional / Inisial)</label>
+            <input type="text" id="respNama" class="form-control" placeholder="contoh: Bpk. Hendra" required>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <select class="form-control" required>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Usia (Tahun)</label>
+              <input type="number" class="form-control" value="35" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 1 with Emoji Rating Scale -->
+        <div class="skm-card" style="padding:16px; margin-bottom:16px;">
+          <div style="font-size:11px; font-weight:700; color:var(--color-primary-dark); margin-bottom:4px;">PERTANYAAN 1 — U1 PERSYARATAN</div>
+          <h4 style="font-size:13.5px; font-weight:700; margin-bottom:12px;">
+            Bagaimana pendapat responden tentang kesesuaian persyaratan pelayanan KTP Elektronik & KK?
+          </h4>
+          
+          <div id="enumRatingContainer"></div>
+        </div>
+
+        <!-- Question 2 with Touch Card Options -->
+        <div class="skm-card" style="padding:16px; margin-bottom:16px;">
+          <div style="font-size:11px; font-weight:700; color:var(--color-primary-dark); margin-bottom:4px;">PERTANYAAN 2 — U2 PROSEDUR</div>
+          <h4 style="font-size:13.5px; font-weight:700; margin-bottom:12px;">
+            Bagaimana kemudahan prosedur pelayanan di loket ini?
+          </h4>
+          
+          <label class="touch-card-radio">
+            <input type="radio" name="p2" checked>
+            <span style="font-size:13px;">Mudah & Jelas</span>
+          </label>
+          <label class="touch-card-radio">
+            <input type="radio" name="p2">
+            <span style="font-size:13px;">Kurang Mudah</span>
+          </label>
+        </div>
+
+        <!-- Catatan Lapangan / Saran -->
+        <div class="skm-card" style="padding:16px; margin-bottom:16px;">
+          <div class="form-group">
+            <label>Catatan Lapangan / Masukan Responden</label>
+            <textarea class="form-control" rows="3" placeholder="Tuliskan jika ada catatan khusus dari responden..."></textarea>
+          </div>
+        </div>
+
+        <!-- Sticky Bottom Bar -->
+        <div style="position:sticky; bottom:0; background:#FFF; border-top:1px solid var(--color-border); padding:12px 16px; margin:0 -20px -20px; display:flex; gap:10px; box-shadow:0 -4px 12px rgba(0,0,0,0.06);">
+          <button type="button" class="btn btn-secondary" style="flex:1;" onclick="saveDraftOffline()">
+            <i data-lucide="save"></i> Simpan Draft
+          </button>
+          <button type="submit" class="btn btn-primary" style="flex:1.5;">
+            <i data-lucide="check"></i> Submit Response
+          </button>
+        </div>
+
+      </form>
+
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderRatingScale('enumRatingContainer', (val) => {
+        showToast(`Penilaian dicatat: ${val}`, 'info');
+      });
+    });
+
+    function saveDraftOffline() {
+      showToast('Draft berhasil disimpan di memori HP! 💾', 'success');
+      setTimeout(() => {
+        window.location.href = './draft.html';
+      }, 1000);
+    }
+
+    function handleEnumSubmit(e) {
+      e.preventDefault();
+      showToast('Response wawancara berhasil disubmit! 🎉', 'success');
+      setTimeout(() => {
+        window.location.href = './dashboard.html';
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

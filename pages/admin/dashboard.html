@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Dashboard — Super Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">SA</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Super Admin</span>
+          <span class="sidebar-brand-sub">Sistem Informasi SKM</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item active">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> System Dashboard
+        </a>
+
+        <div class="nav-section-title">PENGELOLAAN</div>
+        <a href="./users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;"></i> User Management
+        </a>
+        <a href="./master-unit.html" class="nav-item">
+          <i data-lucide="building-2" style="width:18px;"></i> Master Unit Layanan
+        </a>
+        <a href="./master-wilayah.html" class="nav-item">
+          <i data-lucide="map" style="width:18px;"></i> Master Wilayah
+        </a>
+        <a href="./master-question-bank.html" class="nav-item">
+          <i data-lucide="help-circle" style="width:18px;"></i> Question Bank
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./monitoring.html" class="nav-item">
+          <i data-lucide="activity" style="width:18px;"></i> Monitoring Survei
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Indekstat SysAdmin</span>
+            <span class="user-role">Super Admin Level 0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>System Dashboard</h1>
+          <p>Ringkasan kinerja seluruh unit dan survei kepuasan masyarakat</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="showToast('Notifikasi diperbarui', 'info')">
+            <i data-lucide="bell" style="width:16px;"></i> Notifikasi <span class="badge badge-danger">3</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Metric Cards -->
+        <div class="grid-4">
+          <div class="metric-card">
+            <div class="metric-icon"><i data-lucide="building-2"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">12</div>
+              <div class="metric-label">Unit Layanan Aktif</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background:var(--color-primary-subtle); color:var(--color-primary);"><i data-lucide="file-text"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">28</div>
+              <div class="metric-label">Survei Berjalan</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#EBF7EE; color:var(--color-success);"><i data-lucide="users"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">145</div>
+              <div class="metric-label">Pengguna Sistem</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#EFF6FF; color:var(--color-info);"><i data-lucide="message-square"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">4,820</div>
+              <div class="metric-label">Total Respon Masuk</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts & Recent Activity -->
+        <div class="grid-2">
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="bar-chart-2"></i> Jumlah Survei per Unit Layanan</span>
+            </div>
+            <div style="height: 260px;">
+              <canvas id="surveiChart"></canvas>
+            </div>
+          </div>
+
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="clock"></i> Aktivitas Sistem Terbaru</span>
+              <button class="btn btn-ghost btn-sm" onclick="toggleEmptyState()">Toggle Empty State</button>
+            </div>
+            
+            <div id="activityContainer">
+              <div class="table-responsive">
+                <table class="skm-table">
+                  <thead>
+                    <tr>
+                      <th>Pengguna</th>
+                      <th>Aktivitas</th>
+                      <th>Waktu</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Drs. Budi Santoso</strong></td>
+                      <td>Menerbitkan Survei KTP & KK 2026</td>
+                      <td>10 menit lalu</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Rizky Ramadhan</strong></td>
+                      <td>Submit 5 Respon Offline Disdukcapil</td>
+                      <td>35 menit lalu</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Dewi Lestari</strong></td>
+                      <td>Menambah Master Wilayah Serang</td>
+                      <td>2 jam lalu</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Ahmad Subagja</strong></td>
+                      <td>Membuat draf survei RSUD</td>
+                      <td>4 jam lalu</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Empty State Container (Hidden by default) -->
+            <div id="emptyStateContainer" class="empty-state" style="display: none;">
+              <div class="empty-state-icon"><i data-lucide="inbox"></i></div>
+              <div class="empty-state-title">Belum Ada Aktivitas Tercatat</div>
+              <div class="empty-state-sub">Semua log aktivitas sistem terbaru akan ditampilkan di panel ini secara real-time.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('surveiChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Disdukcapil', 'DPMPTSP', 'RSUD', 'Puskesmas A', 'Dinas Kesehatan'],
+          datasets: [{
+            label: 'Survei Berjalan',
+            data: [5, 4, 6, 2, 3],
+            backgroundColor: '#D25353',
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: '#F9ECE0' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    });
+
+    function toggleEmptyState() {
+      const act = document.getElementById('activityContainer');
+      const empty = document.getElementById('emptyStateContainer');
+      if (act.style.display === 'none') {
+        act.style.display = 'block';
+        empty.style.display = 'none';
+      } else {
+        act.style.display = 'none';
+        empty.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Generation — Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item active">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 4 — Survey Generation & Channel Builder</h1>
+          <p>Penyiapan kanal instrumen survei online, QR code, poster cetak, dan form enumerator</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <div class="skm-card" style="background:var(--color-surface); border-color:var(--color-border-focus); margin-bottom:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span class="badge badge-success" style="margin-bottom:6px;">SURVEI AKTIF</span>
+              <h3 style="font-size:16px; font-weight:700; color:var(--color-primary-dark);">Survei Kepuasan Layanan KTP Elektronik & KK 2026</h3>
+            </div>
+            <a href="./survey-distribute.html" class="btn btn-primary btn-sm">
+              Lanjut ke Distribusi <i data-lucide="arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Grid Cards per Channel (PRD Section 8.2.5) -->
+        <div class="grid-2">
+          
+          <!-- Channel 1: Web Survey Link -->
+          <div class="skm-card hover-lift">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="globe"></i> 1. Web Survey (Public Link)</span>
+              <span class="badge badge-success">Aktif</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">
+              Tautan publik langsung yang dapat diakses responden via browser HP atau Komputer.
+            </p>
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+              <input type="text" id="webLinkInput" class="form-control" value="http://localhost:3000/pages/public/landing.html" readonly>
+              <button class="btn btn-outline btn-sm" onclick="copyWebLink()"><i data-lucide="copy"></i> Salin</button>
+            </div>
+            <a href="../public/landing.html" target="_blank" class="btn btn-secondary btn-sm btn-full">
+              <i data-lucide="external-link"></i> Buka Landing Responden
+            </a>
+          </div>
+
+          <!-- Channel 2: QR Code Generator -->
+          <div class="skm-card hover-lift">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="qr-code"></i> 2. QR Code Publik Vector/PNG</span>
+              <span class="badge badge-success">Siap Unduh</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div style="background:#FFF; padding:8px; border:1px solid var(--color-border); border-radius:12px;">
+                <canvas id="qrcodeCanvas" style="width:100px; height:100px;"></canvas>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:10px;">
+                  Pindai QR ini untuk membuka kuesioner secara langsung di HP tanpa ketik URL.
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button class="btn btn-primary btn-sm" onclick="showToast('QR Code PNG diunduh! 📥', 'success')"><i data-lucide="download"></i> Download PNG</button>
+                  <button class="btn btn-outline btn-sm" onclick="showToast('QR Vector SVG diunduh! 📥', 'info')">SVG</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel 3: Poster Layout Generator -->
+          <div class="skm-card hover-lift">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="image"></i> 3. Poster Infografis Pelayanan</span>
+              <span class="badge badge-warning">Template A3 / A4</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">
+              Poster siap cetak untuk ditempel di papan pengumuman & dinding loket pelayanan.
+            </p>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="openModal('posterModal')"><i data-lucide="eye"></i> Preview Design Poster</button>
+              <button class="btn btn-outline btn-sm" onclick="showToast('Poster PDF Siap Cetak diunduh! 📄', 'success')"><i data-lucide="file-text"></i> Download PDF</button>
+            </div>
+          </div>
+
+          <!-- Channel 4: Standing Banner -->
+          <div class="skm-card hover-lift">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="layout"></i> 4. Roll-Up Standing Banner</span>
+              <span class="badge badge-warning">Ukuran 60x160cm</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">
+              Desain standing banner untuk dipasang di pintu masuk ruang tunggu pelayanan.
+            </p>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Standing Banner PDF diunduh! 📄', 'success')">
+              <i data-lucide="download"></i> Download Template Cetak Banner
+            </button>
+          </div>
+
+          <!-- Channel 5: Kuesioner Cetak Offline -->
+          <div class="skm-card hover-lift">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="printer"></i> 5. Kuesioner Paper Cetak (Offline)</span>
+              <span class="badge badge-neutral">Cetak Manual</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">
+              Format lembaran kertas Kuesioner SKM untuk pengisian manual di lokasi yang minim sinyal.
+            </p>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Kuesioner Cetak PDF diunduh! 📄', 'success')">
+              <i data-lucide="file-text"></i> Download PDF Kuesioner Cetak
+            </button>
+          </div>
+
+          <!-- Channel 6: Form Field Enumerator -->
+          <div class="skm-card hover-lift">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="clipboard-check"></i> 6. Form Aplikasi Enumerator</span>
+              <span class="badge badge-info">Petugas Lapangan</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">
+              Tautan khusus form wawancara petugas enumerator lapangan dengan fitur simpan draft offline.
+            </p>
+            <a href="../enumerator/form.html" target="_blank" class="btn btn-secondary btn-sm">
+              <i data-lucide="external-link"></i> Buka Form Enumerator
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Preview Poster -->
+  <div class="modal-overlay" id="posterModal">
+    <div class="modal-card" style="text-align:center; max-width:440px;">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="image"></i> Preview Poster SKM</span>
+        <button class="btn btn-ghost btn-sm" data-close-modal>✕</button>
+      </div>
+      
+      <!-- Poster Preview Canvas Box -->
+      <div style="background:var(--color-surface); border:2px solid var(--color-primary); border-radius:16px; padding:24px; text-align:center; box-shadow:var(--shadow-md);">
+        <div style="font-size:11px; font-weight:700; color:var(--color-primary-dark); text-transform:uppercase;">PEMERINTAH KOTA SERANG</div>
+        <div style="font-size:16px; font-weight:800; color:var(--color-text); margin:4px 0 12px;">SUARA ANDA, KEMAJUAN LAYANAN KAMI!</div>
+        <p style="font-size:11.5px; color:var(--color-text-muted); margin-bottom:16px;">
+          Isi Survei Kepuasan Masyarakat Disdukcapil dalam 3 menit via scan QR Code di bawah ini:
+        </p>
+        <div style="background:#FFF; display:inline-block; padding:12px; border-radius:12px; margin-bottom:12px;">
+          <canvas id="posterQrCanvas" style="width:120px; height:120px;"></canvas>
+        </div>
+        <div style="font-size:11px; font-weight:600; color:var(--color-primary-dark);">🔒 Aman & Anonim</div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary btn-full" onclick="showToast('Poster PDF Diunduh! 📥', 'success'); closeModal('posterModal');">
+          Unduh Poster Siap Cetak (PDF)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const url = window.location.origin + '/pages/public/landing.html';
+      
+      if (window.QRCode) {
+        QRCode.toCanvas(document.getElementById('qrcodeCanvas'), url, { width: 100 });
+        QRCode.toCanvas(document.getElementById('posterQrCanvas'), url, { width: 120 });
+      }
+    });
+
+    function copyWebLink() {
+      const input = document.getElementById('webLinkInput');
+      input.select();
+      navigator.clipboard.writeText(input.value);
+      showToast('Link survei publik berhasil disalin! 📋', 'success');
+    }
+  </script>
+</body>
+</html>

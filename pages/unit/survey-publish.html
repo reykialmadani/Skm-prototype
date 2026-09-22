@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Survey Design — Step 4 Publish</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/stepper.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item active">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 3 — Smart Survey Design Wizard</h1>
+          <p>Langkah 4 dari 4: Finalisasi & Penerbitan Survei (Publish)</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Stepper -->
+        <div id="surveyWizardStepper"></div>
+
+        <div class="skm-card" style="text-align:center; padding:48px 24px;">
+          <div style="width:72px; height:72px; background:var(--color-surface); color:var(--color-primary); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+            <i data-lucide="rocket" style="width:36px; height:36px;"></i>
+          </div>
+
+          <h2 style="font-size:24px; font-weight:700; color:var(--color-text); margin-bottom:8px;">
+            Survei Siap Diterbitkan! 🎉
+          </h2>
+          <p style="font-size:14px; color:var(--color-text-muted); max-width:540px; margin:0 auto 24px;">
+            Instrumen survei <strong>"Survei Kepuasan Layanan KTP Elektronik & KK 2026"</strong> telah siap. Setelah diterbitkan, link publik & QR code otomatis aktif dan siap dibagikan ke responden.
+          </p>
+
+          <div style="display:inline-flex; gap:12px;">
+            <a href="./survey-preview.html" class="btn btn-outline btn-lg"><i data-lucide="arrow-left"></i> Cek Ulang Preview</a>
+            <button class="btn btn-primary btn-lg" onclick="openModal('publishModal')">
+              <i data-lucide="check-circle-2"></i> Terbitkan Survei Sekarang
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Konfirmasi Publish -->
+  <div class="modal-overlay" id="publishModal">
+    <div class="modal-card" style="text-align:center;">
+      <div style="width:60px; height:60px; background:#EBF7EE; color:var(--color-success); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
+        <i data-lucide="help-circle" style="width:32px; height:32px;"></i>
+      </div>
+      <h3 style="font-size:18px; font-weight:700; margin-bottom:8px;">Yakin Ingin Menerbitkan Survei Ini?</h3>
+      <p style="font-size:13px; color:var(--color-text-muted); margin-bottom:20px;">
+        Setelah ini, status survei menjadi <strong>Aktif</strong>. Link, QR Code, Banner, dan Form Enumerator akan langsung dapat digunakan.
+      </p>
+
+      <div style="display:flex; justify-content:center; gap:12px;">
+        <button class="btn btn-outline" data-close-modal>Nanti Dulu</button>
+        <button class="btn btn-primary" onclick="confirmPublish()">Ya, Terbitkan Sekarang!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStepper('surveyWizardStepper', [
+        '1. Info Survei',
+        '2. Question Bank & Skip Logic',
+        '3. Preview Mobile Frame',
+        '4. Publish'
+      ], 3);
+    });
+
+    function confirmPublish() {
+      closeModal('publishModal');
+      showToast('Survei berhasil diterbitkan! Link & QR Code sudah aktif 🎉', 'success');
+      setTimeout(() => {
+        window.location.href = './survey-generate.html';
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

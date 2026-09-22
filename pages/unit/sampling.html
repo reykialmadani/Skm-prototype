@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respondent & Sampling Management — Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item active">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 2 — Respondent & Sampling Management</h1>
+          <p>Kalkulator ilmiah penetapan ukuran sampel & rencana distribusi keterwakilan responden</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Step 1: Input Populasi & Upload -->
+        <div class="skm-card">
+          <div class="card-header">
+            <span class="card-title"><i data-lucide="users"></i> 1. Penentuan Populasi Pengguna Layanan</span>
+          </div>
+          
+          <div class="grid-2">
+            <div>
+              <div class="form-group">
+                <label for="populasiInput">Jumlah Estimasi Populasi Pengguna (N)</label>
+                <input type="number" id="populasiInput" class="form-control" value="10000" oninput="calculateSample()" required>
+                <span class="form-hint">Jumlah total pengunjung / penerima layanan dalam 1 tahun.</span>
+              </div>
+            </div>
+
+            <!-- Drag & Drop Upload Zone -->
+            <div style="border: 2px dashed var(--color-border-focus); border-radius: var(--radius-md); padding: 20px; text-align: center; background: var(--color-surface-light);">
+              <i data-lucide="file-spreadsheet" style="width:32px; height:32px; color:var(--color-primary); margin-bottom:6px;"></i>
+              <div style="font-weight:600; font-size:13px; color:var(--color-text);">Atau Impor Data Populasi (Excel / CSV)</div>
+              <div style="font-size:11.5px; color:var(--color-text-muted); margin-bottom:8px;">Tarik & lepaskan berkas di sini</div>
+              <button class="btn btn-outline btn-sm" onclick="showToast('Template Excel diunduh', 'info')">
+                <i data-lucide="download" style="width:14px;"></i> Download Template (.xlsx)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Pilih Metode Sampling -->
+        <div class="skm-card">
+          <div class="card-header">
+            <span class="card-title"><i data-lucide="award"></i> 2. Pilih Metode Sampling Ilmiah</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+            
+            <div class="touch-card-radio selected" onclick="selectMethod('slovin', this)">
+              <input type="radio" name="samplingMethod" checked>
+              <div>
+                <strong>Rumus Slovin</strong>
+                <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:2px;">
+                  Sangat cocok untuk populasi yang sudah diketahui pasti dan ingin perhitungan cepat & praktis.
+                </div>
+              </div>
+            </div>
+
+            <div class="touch-card-radio" onclick="selectMethod('cochran', this)">
+              <input type="radio" name="samplingMethod">
+              <div>
+                <strong>Rumus Cochran</strong>
+                <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:2px;">
+                  Ideal untuk populasi besar / tidak terbatas dengan variabilitas estimasi yang akurat.
+                </div>
+              </div>
+            </div>
+
+            <div class="touch-card-radio" onclick="selectMethod('krejcie', this)">
+              <input type="radio" name="samplingMethod">
+              <div>
+                <strong>Krejcie & Morgan</strong>
+                <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:2px;">
+                  Tabel standar acuan sampling ilmiah dengan tingkat kepercayaan 95%.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Parameter Adjustments -->
+          <div class="grid-2" style="background:var(--color-bg-alt); padding:20px; border-radius:var(--radius-md);">
+            <div class="form-group">
+              <label style="display:flex; justify-content:space-between;">
+                <span>Margin of Error (Batas Toleransi Kesalahan - e)</span>
+                <strong id="moeValue" style="color:var(--color-primary);">5%</strong>
+              </label>
+              <input type="range" id="moeRange" min="1" max="10" value="5" style="width:100%; accent-color:var(--color-primary);" oninput="updateMoe(this.value)">
+            </div>
+
+            <div class="form-group">
+              <label>Confidence Level (Tingkat Kepercayaan - Z)</label>
+              <select id="clSelect" class="form-control" onchange="calculateSample()">
+                <option value="95">95% (Standar Penelitian Publik Z=1.96)</option>
+                <option value="99">99% (Tingkat Ketelitian Sangat Tinggi Z=2.58)</option>
+                <option value="90">90% (Tingkat Ketelitian Standar Z=1.645)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Realtime Result Banner -->
+          <div style="margin-top:20px; background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%); color:#FFF; border-radius:var(--radius-lg); padding:24px; text-align:center; box-shadow:var(--shadow-md);">
+            <div style="font-size:13px; text-transform:uppercase; letter-spacing:1px; opacity:0.9;">HASIL KALKULASI TARGET SAMPEL MINIMAL</div>
+            <div id="sampleResultText" style="font-size:42px; font-weight:800; margin:8px 0; font-family:var(--font-public);">
+              385 Responden
+            </div>
+            <div style="font-size:13px; opacity:0.95;">
+              Berdasarkan populasi N=10,000 dengan Margin of Error 5% dan Tingkat Kepercayaan 95%.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Target Demographics Breakdown -->
+        <div class="skm-card">
+          <div class="card-header">
+            <span class="card-title"><i data-lucide="pie-chart"></i> 3. Target Distribusi Kuota Responden</span>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <h4 style="font-size:14px; font-weight:700; margin-bottom:12px;">Distribusi Berdasarkan Jenis Kelamin</h4>
+              <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Pria (Estimasi 50%)</span>
+                <span class="badge badge-info">193 Responden</span>
+              </div>
+              <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Wanita (Estimasi 50%)</span>
+                <span class="badge badge-info">192 Responden</span>
+              </div>
+            </div>
+
+            <div>
+              <h4 style="font-size:14px; font-weight:700; margin-bottom:12px;">Distribusi Kelompok Usia</h4>
+              <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>17 - 30 Tahun (Milenial / Gen-Z)</span>
+                <span class="badge badge-neutral">120 Responden</span>
+              </div>
+              <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>31 - 50 Tahun (Dewasa)</span>
+                <span class="badge badge-neutral">185 Responden</span>
+              </div>
+              <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>> 50 Tahun (Lansia)</span>
+                <span class="badge badge-neutral">80 Responden</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Footer -->
+        <div class="sticky-action-bar">
+          <span style="font-size:12.5px; color:var(--color-text-muted);">Sampling plan akan diterapkan pada wizard pembuatan instrumen survei.</span>
+          <button type="button" class="btn btn-primary btn-lg" onclick="saveSamplingPlan()">
+            Simpan & Lanjut ke Smart Survey Design <i data-lucide="arrow-right" style="width:18px;"></i>
+          </button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    let currentMethod = 'slovin';
+
+    function selectMethod(method, element) {
+      currentMethod = method;
+      document.querySelectorAll('.touch-card-radio').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+      element.querySelector('input[type="radio"]').checked = true;
+      calculateSample();
+    }
+
+    function updateMoe(val) {
+      document.getElementById('moeValue').textContent = `${val}%`;
+      calculateSample();
+    }
+
+    function calculateSample() {
+      const N = parseFloat(document.getElementById('populasiInput').value) || 1000;
+      const ePercent = parseFloat(document.getElementById('moeRange').value) || 5;
+      const e = ePercent / 100;
+      
+      let sample = 385;
+      if (currentMethod === 'slovin') {
+        sample = Math.round(N / (1 + N * (e * e)));
+      } else if (currentMethod === 'cochran') {
+        const Z = 1.96;
+        const p = 0.5;
+        const n0 = (Z * Z * p * (1 - p)) / (e * e);
+        sample = Math.round(n0 / (1 + (n0 - 1) / N));
+      } else {
+        sample = Math.round((3.841 * N * 0.25) / (e * e * (N - 1) + 3.841 * 0.25));
+      }
+
+      document.getElementById('sampleResultText').textContent = `${sample.toLocaleString()} Responden`;
+    }
+
+    function saveSamplingPlan() {
+      showToast('Sampling Plan Berhasil Disimpan! 🎉', 'success');
+      setTimeout(() => {
+        window.location.href = './survey-new.html';
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

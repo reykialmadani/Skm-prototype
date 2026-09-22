@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengisian Kuesioner SKM — Responden</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/rating-scale.js"></script>
+</head>
+<body class="public-body">
+  
+  <div style="max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; background: var(--color-bg); box-shadow: var(--shadow-lg);">
+    
+    <!-- Header Progress -->
+    <header style="padding: 16px 20px; background: var(--color-bg); border-bottom: 1px solid var(--color-border); position: sticky; top: 36px; z-index: 100;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span style="font-size:12px; font-weight:700; color:var(--color-primary-dark);" id="questionProgressText">
+          Pertanyaan 1 dari 4
+        </span>
+        <span style="font-size:11px; font-weight:600; color:var(--color-text-muted);" id="progressPercentText">25%</span>
+      </div>
+      <div class="progress-bar-container" style="height:8px;">
+        <div class="progress-bar-fill" id="progressBarFill" style="width:25%;"></div>
+      </div>
+    </header>
+
+    <!-- Main Question Cards Container -->
+    <main style="padding: 20px; flex: 1; display:flex; flex-direction:column; justify-content:center;">
+      
+      <form id="publicSurveyForm" onsubmit="handleNextQuestion(event)">
+        
+        <!-- Screen 1: Demografi Singkat -->
+        <div class="survey-screen" id="screen1">
+          <div class="skm-card" style="padding: 24px 20px;">
+            <span class="badge badge-info" style="margin-bottom:8px;">DATA DEMOGRAFI</span>
+            <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text); margin-bottom: 16px;">
+              Informasi Pengguna Layanan
+            </h2>
+
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <div class="touch-card-radio" onclick="selectRadio(this, 'jk')">
+                <input type="radio" name="jk" value="L" required>
+                <span>Laki-laki</span>
+              </div>
+              <div class="touch-card-radio" onclick="selectRadio(this, 'jk')">
+                <input type="radio" name="jk" value="P">
+                <span>Perempuan</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Pendidikan Terakhir</label>
+              <select class="form-control" required style="padding:12px;">
+                <option value="">-- Pilih Pendidikan --</option>
+                <option value="SMA">SMA / Sederajat</option>
+                <option value="D3/S1">Diploma / Sarjana (D3/S1)</option>
+                <option value="SMP">SMP / Sederajat</option>
+                <option value="SD">SD / Sederajat</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 2: Q1 Persyaratan (Emoji Rating Scale) -->
+        <div class="survey-screen" id="screen2" style="display:none;">
+          <div class="skm-card" style="padding: 24px 20px;">
+            <span class="badge badge-warning" style="margin-bottom:8px;">U1 - PERSYARATAN</span>
+            <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text); margin-bottom: 14px;">
+              Bagaimana pendapat Anda tentang kesesuaian persyaratan pelayanan dengan jenis pelayanannya?
+            </h2>
+
+            <div id="q1RatingContainer"></div>
+          </div>
+        </div>
+
+        <!-- Screen 3: Q2 Prosedur & Skip Logic Trigger -->
+        <div class="survey-screen" id="screen3" style="display:none;">
+          <div class="skm-card" style="padding: 24px 20px;">
+            <span class="badge badge-warning" style="margin-bottom:8px;">U2 - PROSEDUR</span>
+            <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text); margin-bottom: 14px;">
+              Bagaimana kemudahan prosedur dan alur pelayanan KTP & KK di loket?
+            </h2>
+
+            <div class="touch-card-radio" onclick="selectRadio(this, 'q2')">
+              <input type="radio" name="q2" value="4">
+              <span>😄 Sangat Mudah & Jelas</span>
+            </div>
+            <div class="touch-card-radio" onclick="selectRadio(this, 'q2')">
+              <input type="radio" name="q2" value="3">
+              <span>🙂 Cukup Mudah</span>
+            </div>
+            <div class="touch-card-radio" onclick="selectRadio(this, 'q2')">
+              <input type="radio" name="q2" value="1">
+              <span>😞 Kurang Mudah / Rumit (Trigger Skip Logic)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 4: Q Terbuka Saran -->
+        <div class="survey-screen" id="screen4" style="display:none;">
+          <div class="skm-card" style="padding: 24px 20px;">
+            <span class="badge badge-success" style="margin-bottom:8px;">MASUKAN & SARAN</span>
+            <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text); margin-bottom: 12px;">
+              Berikan saran atau pengalaman Anda untuk kemajuan pelayanan kami:
+            </h2>
+
+            <div class="form-group">
+              <textarea class="form-control" rows="4" placeholder="Ceritakan pengalamanmu di sini... (opsional)"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Bottom Navigation Buttons -->
+        <div style="position:sticky; bottom:0; background:#FFF; border-top:1px solid var(--color-border); padding:16px 20px; margin:0 -20px -20px; display:flex; gap:12px;">
+          <button type="button" id="prevBtn" class="btn btn-outline" style="display:none;" onclick="prevScreen()">
+            <i data-lucide="arrow-left"></i> Kembali
+          </button>
+          <button type="submit" id="nextBtn" class="btn btn-primary btn-full btn-lg">
+            Lanjut <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+
+      </form>
+
+    </main>
+
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    let currentScreen = 1;
+    const totalScreens = 4;
+    let selectedRatingVal = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderRatingScale('q1RatingContainer', (val) => {
+        selectedRatingVal = val;
+      });
+    });
+
+    function selectRadio(card, groupName) {
+      document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+        r.closest('.touch-card-radio').classList.remove('selected');
+      });
+      card.classList.add('selected');
+      card.querySelector('input').checked = true;
+    }
+
+    function handleNextQuestion(e) {
+      e.preventDefault();
+
+      // Microcopy friendly validation (PRD 7.6)
+      if (currentScreen === 2 && !selectedRatingVal) {
+        showToast('Yuk, pilih salah satu emoji jawaban dulu ya 🙂', 'warning');
+        return;
+      }
+
+      if (currentScreen < totalScreens) {
+        currentScreen++;
+        updateScreenView();
+      } else {
+        showToast('Jawabanmu sedang dikirim...', 'info');
+        setTimeout(() => {
+          window.location.href = './thank-you.html';
+        }, 800);
+      }
+    }
+
+    function prevScreen() {
+      if (currentScreen > 1) {
+        currentScreen--;
+        updateScreenView();
+      }
+    }
+
+    function updateScreenView() {
+      for (let i = 1; i <= totalScreens; i++) {
+        document.getElementById(`screen${i}`).style.display = (i === currentScreen) ? 'block' : 'none';
+      }
+
+      document.getElementById('prevBtn').style.display = (currentScreen > 1) ? 'block' : 'none';
+      document.getElementById('nextBtn').textContent = (currentScreen === totalScreens) ? 'Kirim Jawaban Akhir 🎉' : 'Lanjut →';
+
+      const percent = Math.round((currentScreen / totalScreens) * 100);
+      document.getElementById('questionProgressText').textContent = `Pertanyaan ${currentScreen} dari ${totalScreens}`;
+      document.getElementById('progressPercentText').textContent = `${percent}%`;
+      document.getElementById('progressBarFill').style.width = `${percent}%`;
+    }
+  </script>
+</body>
+</html>

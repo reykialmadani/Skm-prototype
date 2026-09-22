@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Survey Design — Step 1 Info Survei</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/stepper.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item active">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 3 — Smart Survey Design Wizard</h1>
+          <p>Langkah 1 dari 4: Pengisian informasi umum dan sasaran survei</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Stepper -->
+        <div id="surveyWizardStepper"></div>
+
+        <form onsubmit="handleNextStep1(event)">
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="file-text"></i> Informasi Utama Survei SKM</span>
+            </div>
+
+            <div class="form-group">
+              <label>Judul / Nama Survei Kepuasan</label>
+              <input type="text" id="surveyTitle" class="form-control" value="Survei Kepuasan Layanan KTP Elektronik & KK 2026" required>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Unit Pelayanan Terkait</label>
+                <input type="text" class="form-control" value="Dinas Kependudukan dan Pencatatan Sipil" readonly style="background:var(--color-bg-alt);">
+              </div>
+              <div class="form-group">
+                <label>Target Responden (Otomatis dari Sampling Plan)</label>
+                <input type="text" class="form-control" value="385 Responden (Margin of Error 5%)" readonly style="background:var(--color-bg-alt); font-weight:700;">
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Tanggal Mulai Pelaksanaan</label>
+                <input type="date" class="form-control" value="2026-01-01" required>
+              </div>
+              <div class="form-group">
+                <label>Tanggal Selesai Pelaksanaan</label>
+                <input type="date" class="form-control" value="2026-12-31" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Deskripsi & Salam Pembuka untuk Responden Publik</label>
+              <textarea class="form-control" rows="3" required>Halo Sdr/i Responden! Bantu kami meningkatkan kualitas pelayanan KTP & KK di Disdukcapil Kota Serang dengan mengisi survei singkat ini (± 5 menit). Jawabanmu dijamin aman & anonim. Terima kasih atas partisipasimu! 🎉</textarea>
+            </div>
+          </div>
+
+          <!-- Sticky Action Footer -->
+          <div class="sticky-action-bar">
+            <a href="./sampling.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Kembali ke Sampling</a>
+            <button type="submit" class="btn btn-primary btn-lg">
+              Lanjut ke Langkah 2: Question Bank & Skip Logic <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStepper('surveyWizardStepper', [
+        '1. Info Survei',
+        '2. Question Bank & Skip Logic',
+        '3. Preview Mobile Frame',
+        '4. Publish'
+      ], 0);
+    });
+
+    function handleNextStep1(e) {
+      e.preventDefault();
+      window.location.href = './survey-questions.html';
+    }
+  </script>
+</body>
+</html>

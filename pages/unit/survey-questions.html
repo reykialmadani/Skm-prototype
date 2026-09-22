@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Survey Design — Step 2 Question Bank & Skip Logic</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/stepper.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item active">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 3 — Smart Survey Design Wizard</h1>
+          <p>Langkah 2 dari 4: Pemilihan pertanyaan instrumen & konfigurasi Smart Skip Logic</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Stepper -->
+        <div id="surveyWizardStepper"></div>
+
+        <div class="grid-2" style="align-items:start;">
+          
+          <!-- Left Panel: Question Bank Pool -->
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="database"></i> Bank Pertanyaan Standar</span>
+              <button class="btn btn-outline btn-sm" onclick="openModal('customQuestionModal')">
+                <i data-lucide="plus"></i> Pertanyaan Custom
+              </button>
+            </div>
+            
+            <p style="font-size:12px; color:var(--color-text-muted); margin-bottom:14px;">
+              Pilih pertanyaan standar 9 Unsur Pelayanan Publik untuk ditambahkan ke instrumen survei:
+            </p>
+
+            <div id="bankPoolList" style="display:flex; flex-direction:column; gap:10px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Right Panel: Selected Questions List -->
+          <div>
+            <div class="skm-card">
+              <div class="card-header">
+                <span class="card-title"><i data-lucide="check-square"></i> Pertanyaan Terpilih dalam Kuesioner Ini</span>
+                <span class="badge badge-success" id="selectedCountBadge">10 Pertanyaan</span>
+              </div>
+
+              <div id="selectedQuestionsList" style="display:flex; flex-direction:column; gap:12px;">
+                <!-- Selected questions container -->
+              </div>
+            </div>
+
+            <!-- Skip Logic Builder Card (PRD Section 8.2.3 Step 2) -->
+            <div class="skm-card" style="background:var(--color-surface-light); border: 2px dashed var(--color-primary-light);">
+              <div class="card-header">
+                <span class="card-title"><i data-lucide="git-fork"></i> Smart Skip Logic Builder</span>
+                <span class="badge badge-warning">Fitur Cerdas</span>
+              </div>
+
+              <p style="font-size:12px; color:var(--color-text-muted); margin-bottom:14px;">
+                Tentukan kondisi percabangan kuesioner berdasarkan jawaban responden sebelumnya:
+              </p>
+
+              <div class="grid-3" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-bottom:12px;">
+                <div>
+                  <label style="font-size:11px; font-weight:600;">JIKA JAWABAN</label>
+                  <select class="form-control" style="font-size:12px;">
+                    <option value="Q1">Q1. Persyaratan Pelayanan</option>
+                    <option value="Q2">Q2. Prosedur Pelayanan</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11px; font-weight:600;">SAMA DENGAN</label>
+                  <select class="form-control" style="font-size:12px;">
+                    <option value="1">😞 Sangat Tidak Puas / Tidak Sesuai</option>
+                    <option value="2">🙁 Kurang Puas / Kurang Sesuai</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11px; font-weight:600;">MAKA TAMPILKAN</label>
+                  <select class="form-control" style="font-size:12px;">
+                    <option value="Q10">Q10. Alasan Ketidakpuasan (Teks Terbuka)</option>
+                    <option value="Q8">Q8. Penanganan Pengaduan</option>
+                  </select>
+                </div>
+              </div>
+
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Skip logic rule berhasil ditambahkan! 🎉', 'success')">
+                + Tambah Rule Percabangan Baru
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky Footer -->
+        <div class="sticky-action-bar">
+          <a href="./survey-new.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Kembali ke Step 1</a>
+          <a href="./survey-preview.html" class="btn btn-primary btn-lg">
+            Lanjut ke Langkah 3: Preview Mobile Frame <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Custom Question -->
+  <div class="modal-overlay" id="customQuestionModal">
+    <div class="modal-card">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="plus-circle"></i> Tambah Pertanyaan Custom</span>
+        <button class="btn btn-ghost btn-sm" data-close-modal>✕</button>
+      </div>
+      <form onsubmit="handleAddCustomQuestion(event)">
+        <div class="form-group">
+          <label>Teks Pertanyaan</label>
+          <textarea id="customTeks" class="form-control" rows="3" placeholder="Tuliskan pertanyaan tambahan..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Tipe Jawaban</label>
+          <select id="customTipe" class="form-control" required>
+            <option value="skala_4">Skala 4 Emoji Kepuasan</option>
+            <option value="pilihan_ganda">Pilihan Ganda (Touch Card)</option>
+            <option value="terbuka">Isian Teks Terbuka</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="customWajib" checked style="accent-color:var(--color-primary);">
+          <label for="customWajib" style="margin-bottom:0; cursor:pointer;">Wajib diisi oleh responden</label>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">Tambahkan Pertanyaan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStepper('surveyWizardStepper', [
+        '1. Info Survei',
+        '2. Question Bank & Skip Logic',
+        '3. Preview Mobile Frame',
+        '4. Publish'
+      ], 1);
+
+      renderPoolAndSelected();
+    });
+
+    function renderPoolAndSelected() {
+      const qb = getStoredData().questionBank;
+      const bankPoolList = document.getElementById('bankPoolList');
+      const selectedQuestionsList = document.getElementById('selectedQuestionsList');
+
+      bankPoolList.innerHTML = qb.map(q => `
+        <div class="skm-card" style="padding:12px; margin-bottom:0; background:var(--color-bg-alt); display:flex; align-items:center; gap:10px;">
+          <input type="checkbox" checked style="width:18px; height:18px; accent-color:var(--color-primary);">
+          <div style="flex:1;">
+            <div style="font-size:11px; font-weight:700; color:var(--color-primary-dark);">${q.unsur}</div>
+            <div style="font-size:12.5px; font-weight:600;">${q.teks}</div>
+          </div>
+        </div>
+      `).join('');
+
+      selectedQuestionsList.innerHTML = qb.map((q, idx) => `
+        <div class="skm-card" style="padding:12px 16px; margin-bottom:0; display:flex; align-items:center; gap:12px; border-left:4px solid var(--color-primary);">
+          <i data-lucide="grip-vertical" style="color:var(--color-text-muted); cursor:grab;"></i>
+          <span class="badge badge-warning">Q${idx + 1}</span>
+          <div style="flex:1;">
+            <div style="font-size:12.5px; font-weight:600;">${q.teks}</div>
+            <div style="font-size:11px; color:var(--color-text-muted);">${q.unsur} • ${q.tipe === 'skala_4' ? 'Skala Emoji 1-4' : 'Teks Terbuka'}</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="this.closest('.skm-card').remove(); updateSelectedCount();">✕</button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function handleAddCustomQuestion(e) {
+      e.preventDefault();
+      const teks = document.getElementById('customTeks').value;
+      const tipe = document.getElementById('customTipe').value;
+
+      const selectedList = document.getElementById('selectedQuestionsList');
+      const count = selectedList.children.length + 1;
+
+      const div = document.createElement('div');
+      div.className = 'skm-card';
+      div.style.cssText = 'padding:12px 16px; margin-bottom:0; display:flex; align-items:center; gap:12px; border-left:4px solid var(--color-primary);';
+      div.innerHTML = `
+        <i data-lucide="grip-vertical" style="color:var(--color-text-muted); cursor:grab;"></i>
+        <span class="badge badge-warning">Q${count}</span>
+        <div style="flex:1;">
+          <div style="font-size:12.5px; font-weight:600;">${teks}</div>
+          <div style="font-size:11px; color:var(--color-text-muted);">Custom Question • ${tipe}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="this.closest('.skm-card').remove(); updateSelectedCount();">✕</button>
+      `;
+      selectedList.appendChild(div);
+
+      closeModal('customQuestionModal');
+      updateSelectedCount();
+      showToast('Pertanyaan Custom Berhasil Ditambahkan! 🎉', 'success');
+      lucide.createIcons();
+    }
+
+    function updateSelectedCount() {
+      const count = document.getElementById('selectedQuestionsList').children.length;
+      document.getElementById('selectedCountBadge').textContent = `${count} Pertanyaan`;
+    }
+  </script>
+</body>
+</html>

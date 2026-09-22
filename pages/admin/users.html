@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management — Super Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">SA</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Super Admin</span>
+          <span class="sidebar-brand-sub">Sistem Informasi SKM</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> System Dashboard
+        </a>
+
+        <div class="nav-section-title">PENGELOLAAN</div>
+        <a href="./users.html" class="nav-item active">
+          <i data-lucide="users" style="width:18px;"></i> User Management
+        </a>
+        <a href="./master-unit.html" class="nav-item">
+          <i data-lucide="building-2" style="width:18px;"></i> Master Unit Layanan
+        </a>
+        <a href="./master-wilayah.html" class="nav-item">
+          <i data-lucide="map" style="width:18px;"></i> Master Wilayah
+        </a>
+        <a href="./master-question-bank.html" class="nav-item">
+          <i data-lucide="help-circle" style="width:18px;"></i> Question Bank
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./monitoring.html" class="nav-item">
+          <i data-lucide="activity" style="width:18px;"></i> Monitoring Survei
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Indekstat SysAdmin</span>
+            <span class="user-role">Super Admin Level 0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>User & Role Management</h1>
+          <p>Pengelolaan akun pengguna, penetapan peran, dan hak akses modul</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="openModal('permissionModal')">
+            <i data-lucide="shield" style="width:16px;"></i> Matriks Hak Akses
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('userModal')">
+            <i data-lucide="plus-circle" style="width:16px;"></i> Tambah Pengguna Baru
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <div class="skm-card">
+          <!-- Search & Filter -->
+          <div style="display:flex; justify-content:space-between; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:260px; position:relative;">
+              <input type="text" id="searchUser" class="form-control" placeholder="Cari nama atau email pengguna..." onkeyup="filterUsers()">
+            </div>
+            <div style="width:200px;">
+              <select id="roleFilter" class="form-control" onchange="filterUsers()">
+                <option value="">Semua Role</option>
+                <option value="Admin Unit Layanan">Admin Unit Layanan</option>
+                <option value="Enumerator">Enumerator</option>
+                <option value="Super Admin">Super Admin</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="table-responsive">
+            <table class="skm-table" id="userTable">
+              <thead>
+                <tr>
+                  <th>Nama Pengguna</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Unit Layanan</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Drs. Budi Santoso, M.Si</strong></td>
+                  <td>budi.disdukcapil@go.id</td>
+                  <td><span class="badge badge-info">Admin Unit Layanan</span></td>
+                  <td>Disdukcapil Kota Serang</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm" onclick="showToast('Edit user dibuka', 'info')"><i data-lucide="edit-2" style="width:14px;"></i> Edit</button>
+                    <button class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="toggleUserStatus(this)"><i data-lucide="power" style="width:14px;"></i> Nonaktifkan</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Rizky Ramadhan</strong></td>
+                  <td>rizky.enumerator@go.id</td>
+                  <td><span class="badge badge-warning">Enumerator</span></td>
+                  <td>Disdukcapil Kota Serang</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm" onclick="showToast('Edit user dibuka', 'info')"><i data-lucide="edit-2" style="width:14px;"></i> Edit</button>
+                    <button class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="toggleUserStatus(this)"><i data-lucide="power" style="width:14px;"></i> Nonaktifkan</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Dewi Lestari, S.STP</strong></td>
+                  <td>dewi.dpmptsp@go.id</td>
+                  <td><span class="badge badge-info">Admin Unit Layanan</span></td>
+                  <td>Dinas PMPTSP Kota Serang</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm" onclick="showToast('Edit user dibuka', 'info')"><i data-lucide="edit-2" style="width:14px;"></i> Edit</button>
+                    <button class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="toggleUserStatus(this)"><i data-lucide="power" style="width:14px;"></i> Nonaktifkan</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Tambah User -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal-card">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="user-plus"></i> Tambah Pengguna Baru</span>
+        <button class="btn btn-ghost btn-sm" data-close-modal>✕</button>
+      </div>
+      <form onsubmit="handleSaveUser(event)">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" class="form-control" placeholder="contoh: Ahmad Subagja, S.Kom" required>
+        </div>
+        <div class="form-group">
+          <label>Email Instansi</label>
+          <input type="email" class="form-control" placeholder="ahmad@instansi.go.id" required>
+        </div>
+        <div class="grid-2" style="margin-bottom:0; gap:12px;">
+          <div class="form-group">
+            <label>Role / Peran</label>
+            <select class="form-control" required>
+              <option value="Admin Unit Layanan">Admin Unit Layanan</option>
+              <option value="Enumerator">Enumerator / Petugas Lapangan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Unit Layanan</label>
+            <select class="form-control" required>
+              <option value="Disdukcapil Kota Serang">Disdukcapil Kota Serang</option>
+              <option value="Dinas PMPTSP">Dinas PMPTSP</option>
+              <option value="RSUD Kota Serang">RSUD Kota Serang</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password Sementara</label>
+          <input type="text" class="form-control" value="Skm2026!Default" readonly>
+          <span class="form-hint">Pengguna wajib mengganti password saat login pertama kali.</span>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Pengguna</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Permission Matrix -->
+  <div class="modal-overlay" id="permissionModal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="shield-check"></i> Matriks Hak Akses Per Role (Bab 5 PRD)</span>
+        <button class="btn btn-ghost btn-sm" data-close-modal>✕</button>
+      </div>
+      <div class="table-responsive">
+        <table class="skm-table">
+          <thead>
+            <tr>
+              <th>Modul / Fitur</th>
+              <th>Super Admin</th>
+              <th>Admin Unit</th>
+              <th>Enumerator</th>
+              <th>Responden</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>User & Permission Management</td>
+              <td><span class="badge badge-success">✓ Akses Penuh</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Business Process Identification</td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td><span class="badge badge-warning">E Edit</span></td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Smart Survey Design</td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Respondent & Sampling</td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Survey Collection & Form</td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+              <td><span class="badge badge-info">Publik</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function handleSaveUser(e) {
+      e.preventDefault();
+      closeModal('userModal');
+      showToast('Pengguna baru berhasil ditambahkan! 🎉', 'success');
+    }
+
+    function toggleUserStatus(btn) {
+      const row = btn.closest('tr');
+      const badge = row.querySelector('.badge-success, .badge-neutral');
+      if (badge.classList.contains('badge-success')) {
+        badge.className = 'badge badge-neutral';
+        badge.textContent = 'Nonaktif';
+        btn.innerHTML = `<i data-lucide="power" style="width:14px;"></i> Aktifkan`;
+        btn.style.color = 'var(--color-success)';
+        showToast('Pengguna telah dinonaktifkan', 'warning');
+      } else {
+        badge.className = 'badge badge-success';
+        badge.textContent = 'Aktif';
+        btn.innerHTML = `<i data-lucide="power" style="width:14px;"></i> Nonaktifkan`;
+        btn.style.color = 'var(--color-danger)';
+        showToast('Pengguna telah diaktifkan kembali', 'success');
+      }
+      lucide.createIcons();
+    }
+
+    function filterUsers() {
+      const search = document.getElementById('searchUser').value.toLowerCase();
+      const role = document.getElementById('roleFilter').value.toLowerCase();
+      const rows = document.querySelectorAll('#userTable tbody tr');
+
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const matchesSearch = text.includes(search);
+        const matchesRole = !role || text.includes(role);
+        r.style.display = (matchesSearch && matchesRole) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

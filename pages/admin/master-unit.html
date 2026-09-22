@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Unit Layanan — Super Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">SA</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Super Admin</span>
+          <span class="sidebar-brand-sub">Sistem Informasi SKM</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> System Dashboard
+        </a>
+
+        <div class="nav-section-title">PENGELOLAAN</div>
+        <a href="./users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;"></i> User Management
+        </a>
+        <a href="./master-unit.html" class="nav-item active">
+          <i data-lucide="building-2" style="width:18px;"></i> Master Unit Layanan
+        </a>
+        <a href="./master-wilayah.html" class="nav-item">
+          <i data-lucide="map" style="width:18px;"></i> Master Wilayah
+        </a>
+        <a href="./master-question-bank.html" class="nav-item">
+          <i data-lucide="help-circle" style="width:18px;"></i> Question Bank
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./monitoring.html" class="nav-item">
+          <i data-lucide="activity" style="width:18px;"></i> Monitoring Survei
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Indekstat SysAdmin</span>
+            <span class="user-role">Super Admin Level 0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Master Unit Layanan</h1>
+          <p>Daftar organisasi / unit penyelenggara pelayanan publik (UPT / UPP)</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary btn-sm" onclick="openModal('unitModal')">
+            <i data-lucide="plus-circle" style="width:16px;"></i> Tambah Unit Layanan
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <div class="skm-card">
+          <div class="table-responsive">
+            <table class="skm-table">
+              <thead>
+                <tr>
+                  <th>Kode Unit</th>
+                  <th>Nama Unit Layanan</th>
+                  <th>Tugas & Fungsi</th>
+                  <th>Total Survei</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="unitTableBody">
+                <!-- Dynamically rendered from data.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Tambah Unit -->
+  <div class="modal-overlay" id="unitModal">
+    <div class="modal-card">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="building"></i> Tambah Unit Layanan</span>
+        <button class="btn btn-ghost btn-sm" data-close-modal>✕</button>
+      </div>
+      <form onsubmit="handleSaveUnit(event)">
+        <div class="form-group">
+          <label>Kode Singkat Unit</label>
+          <input type="text" id="unitKode" class="form-control" placeholder="contoh: DISKOP-UMKM" required>
+        </div>
+        <div class="form-group">
+          <label>Nama Lengkap Unit Layanan</label>
+          <input type="text" id="unitNama" class="form-control" placeholder="contoh: Dinas Koperasi & UMKM" required>
+        </div>
+        <div class="form-group">
+          <label>Tugas & Fungsi Utama</label>
+          <textarea id="unitTusi" class="form-control" rows="3" placeholder="Jelaskan bidang pelayanan publik unit ini..."></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Unit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderUnits();
+    });
+
+    function renderUnits() {
+      const units = getStoredData().masterUnits;
+      const tbody = document.getElementById('unitTableBody');
+      tbody.innerHTML = units.map(u => `
+        <tr>
+          <td><code>${u.kode}</code></td>
+          <td><strong>${u.nama}</strong><br><span style="font-size:11.5px; color:var(--color-text-muted);">${u.alamat}</span></td>
+          <td>${u.tusi}</td>
+          <td><span class="badge badge-info">${u.totalSurvei} Survei</span></td>
+          <td><span class="badge badge-success">${u.status}</span></td>
+          <td>
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Edit unit ${u.kode}', 'info')"><i data-lucide="edit-2" style="width:14px;"></i> Edit</button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function handleSaveUnit(e) {
+      e.preventDefault();
+      const kode = document.getElementById('unitKode').value;
+      const nama = document.getElementById('unitNama').value;
+      const tusi = document.getElementById('unitTusi').value;
+
+      const data = getStoredData();
+      data.masterUnits.push({
+        id: `U-00${data.masterUnits.length + 1}`,
+        kode: kode,
+        nama: nama,
+        tusi: tusi,
+        alamat: "Jl. Balai Kota No. 1",
+        totalSurvei: 0,
+        status: "Aktif"
+      });
+      saveStoredData(data);
+
+      closeModal('unitModal');
+      renderUnits();
+      showToast(`Unit Layanan ${nama} berhasil ditambahkan! 🎉`, 'success');
+    }
+  </script>
+</body>
+</html>

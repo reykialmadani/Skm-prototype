@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Process Identification — Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- Sidebar Unit Admin -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item active">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 1 — Business Process Identification</h1>
+          <p>Identifikasi profil, tugas fungsi, model interaksi, produk & prosedur layanan publik</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Progress Header -->
+        <div class="skm-card" style="background:var(--color-surface); border-color:var(--color-border-focus);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <span style="font-weight:700; color:var(--color-primary-dark);">Kelengkapan Profil Layanan Unit</span>
+            <span style="font-weight:700; color:var(--color-primary); font-size:16px;">80% Selesai</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width:80%;"></div>
+          </div>
+        </div>
+
+        <form id="bpForm" onsubmit="handleSaveBP(event)">
+          
+          <!-- Section 1: Identitas Unit -->
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="building"></i> 1. Identitas Unit Layanan</span>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Nama Unit Layanan</label>
+                <input type="text" class="form-control" value="Dinas Kependudukan dan Pencatatan Sipil Kota Serang" required>
+              </div>
+              <div class="form-group">
+                <label>Nomor Telepon / Hotline Whatsapp</label>
+                <input type="text" class="form-control" value="0812-3456-7890 (Layanan Pengaduan WA)" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Alamat Kantor / Loket Pelayanan</label>
+              <textarea class="form-control" rows="2">Jl. Pemuda No. 45, Kotabaru, Kec. Serang, Kota Serang, Banten 42112</textarea>
+            </div>
+          </div>
+
+          <!-- Section 2: Tusi (Dynamic List) -->
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="clipboard-list"></i> 2. Inventarisasi Tugas & Fungsi Utama</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="addTusiRow()"><i data-lucide="plus"></i> Tambah Tugas</button>
+            </div>
+            <div id="tusiContainer">
+              <div class="form-group tusi-row" style="display:flex; gap:10px;">
+                <input type="text" class="form-control" value="Pelayanan Penerbitan Kartu Tanda Penduduk (KTP-el) & Kartu Keluarga" required>
+                <button type="button" class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="removeRow(this)">✕</button>
+              </div>
+              <div class="form-group tusi-row" style="display:flex; gap:10px;">
+                <input type="text" class="form-control" value="Pelayanan Pencatatan Sipil Akta Kelahiran, Kematian & Perkawinan" required>
+                <button type="button" class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="removeRow(this)">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Model Interaksi Layanan -->
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="users"></i> 3. Model Interaksi Layanan</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">Pilih tipe kelompok pengguna yang berinteraksi dengan layanan unit Anda:</p>
+            
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
+              <label class="touch-card-radio selected">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>G2C (Government to Citizen)</strong>
+                  <div style="font-size:11.5px; color:var(--color-text-muted);">Layanan langsung kepada masyarakat umum</div>
+                </div>
+              </label>
+
+              <label class="touch-card-radio">
+                <input type="checkbox">
+                <div>
+                  <strong>G2B (Government to Business)</strong>
+                  <div style="font-size:11.5px; color:var(--color-text-muted);">Layanan bagi badan usaha/pelaku UMKM</div>
+                </div>
+              </label>
+
+              <label class="touch-card-radio">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>G2G (Government to Government)</strong>
+                  <div style="font-size:11.5px; color:var(--color-text-muted);">Layanan antar instansi / UPT pemerintah</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Section 4: Produk Layanan -->
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="package"></i> 4. Produk / Output Layanan</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="addProductRow()"><i data-lucide="plus"></i> Tambah Produk</button>
+            </div>
+            <div id="productContainer">
+              <div class="grid-2 product-row">
+                <div class="form-group">
+                  <label>Nama Produk Layanan</label>
+                  <input type="text" class="form-control" value="Dokumen KTP Elektronik FISIK / Digital (IKD)">
+                </div>
+                <div class="form-group">
+                  <label>Estimasi Standar Waktu Selesai</label>
+                  <input type="text" class="form-control" value="1 Hari Kerja (Gratis Rp 0)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: Prosedur Layanan (Drag Builder Simulation) -->
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="git-commit"></i> 5. Prosedur & Tahapan Mekanisme Layanan</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="addProcedureStep()"><i data-lucide="plus"></i> Tambah Tahapan</button>
+            </div>
+            <div id="procedureContainer" style="display:flex; flex-direction:column; gap:10px;">
+              <div class="skm-card step-row" style="padding:12px 16px; margin-bottom:0; background:var(--color-bg-alt); display:flex; align-items:center; gap:12px;">
+                <i data-lucide="grip-vertical" style="color:var(--color-text-muted); cursor:grab;"></i>
+                <span class="badge badge-warning">Langkah 1</span>
+                <input type="text" class="form-control" value="Pengambilan nomor antrean & verifikasi kelengkapan berkas di Loket 1" style="flex:1;">
+                <button type="button" class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="removeStep(this)">✕</button>
+              </div>
+
+              <div class="skm-card step-row" style="padding:12px 16px; margin-bottom:0; background:var(--color-bg-alt); display:flex; align-items:center; gap:12px;">
+                <i data-lucide="grip-vertical" style="color:var(--color-text-muted); cursor:grab;"></i>
+                <span class="badge badge-warning">Langkah 2</span>
+                <input type="text" class="form-control" value="Perekaman Biometrik (Foto, Iris Mata, Sidik Jari) di Loket Perekaman" style="flex:1;">
+                <button type="button" class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="removeStep(this)">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sticky Action Bar Footer -->
+          <div class="sticky-action-bar">
+            <span style="font-size:12.5px; color:var(--color-text-muted);">📌 Data identifikasi bisnis tersimpan otomatis di draf lokal.</span>
+            <button type="submit" class="btn btn-primary btn-lg">
+              Simpan & Lanjut ke Sampling <i data-lucide="arrow-right" style="width:18px;"></i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function addTusiRow() {
+      const container = document.getElementById('tusiContainer');
+      const div = document.createElement('div');
+      div.className = 'form-group tusi-row';
+      div.style.cssText = 'display:flex; gap:10px;';
+      div.innerHTML = `
+        <input type="text" class="form-control" placeholder="Tuliskan tugas & fungsi layanan..." required>
+        <button type="button" class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="removeRow(this)">✕</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function addProductRow() {
+      const container = document.getElementById('productContainer');
+      const div = document.createElement('div');
+      div.className = 'grid-2 product-row';
+      div.innerHTML = `
+        <div class="form-group">
+          <label>Nama Produk Layanan</label>
+          <input type="text" class="form-control" placeholder="contoh: Dokumen Akta Kelahiran">
+        </div>
+        <div class="form-group">
+          <label>Estimasi Standar Waktu Selesai</label>
+          <input type="text" class="form-control" placeholder="contoh: 2 Hari Kerja">
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    function addProcedureStep() {
+      const container = document.getElementById('procedureContainer');
+      const count = container.children.length + 1;
+      const div = document.createElement('div');
+      div.className = 'skm-card step-row';
+      div.style.cssText = 'padding:12px 16px; margin-bottom:0; background:var(--color-bg-alt); display:flex; align-items:center; gap:12px;';
+      div.innerHTML = `
+        <i data-lucide="grip-vertical" style="color:var(--color-text-muted); cursor:grab;"></i>
+        <span class="badge badge-warning">Langkah ${count}</span>
+        <input type="text" class="form-control" placeholder="Tuliskan deskripsi tahapan prosedur..." style="flex:1;">
+        <button type="button" class="btn btn-ghost btn-sm" style="color:var(--color-danger);" onclick="removeStep(this)">✕</button>
+      `;
+      container.appendChild(div);
+      lucide.createIcons();
+    }
+
+    function removeRow(btn) {
+      btn.closest('.tusi-row').remove();
+    }
+
+    function removeStep(btn) {
+      btn.closest('.step-row').remove();
+    }
+
+    function handleSaveBP(e) {
+      e.preventDefault();
+      showToast('Profil Identifikasi Bisnis Berhasil Disimpan! 🎉', 'success');
+      setTimeout(() => {
+        window.location.href = './sampling.html';
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

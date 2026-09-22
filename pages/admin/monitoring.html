@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Seluruh Survei — Super Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">SA</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Super Admin</span>
+          <span class="sidebar-brand-sub">Sistem Informasi SKM</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> System Dashboard
+        </a>
+
+        <div class="nav-section-title">PENGELOLAAN</div>
+        <a href="./users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;"></i> User Management
+        </a>
+        <a href="./master-unit.html" class="nav-item">
+          <i data-lucide="building-2" style="width:18px;"></i> Master Unit Layanan
+        </a>
+        <a href="./master-wilayah.html" class="nav-item">
+          <i data-lucide="map" style="width:18px;"></i> Master Wilayah
+        </a>
+        <a href="./master-question-bank.html" class="nav-item">
+          <i data-lucide="help-circle" style="width:18px;"></i> Question Bank
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./monitoring.html" class="nav-item active">
+          <i data-lucide="activity" style="width:18px;"></i> Monitoring Survei
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Indekstat SysAdmin</span>
+            <span class="user-role">Super Admin Level 0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Monitoring Seluruh Survei</h1>
+          <p>Pemantauan capaian pengumpulan data survei di seluruh unit pelayanan publik</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="showToast('Rekapitulasi Excel diunduh (Simulasi)', 'success')">
+            <i data-lucide="download" style="width:16px;"></i> Ekspor Rekap Data
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <div class="skm-card">
+          <!-- Filters -->
+          <div style="display:flex; justify-content:space-between; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:240px;">
+              <input type="text" id="searchMon" class="form-control" placeholder="Cari nama survei atau unit..." onkeyup="filterMonitoring()">
+            </div>
+            <div style="width:180px;">
+              <select id="statusMonFilter" class="form-control" onchange="filterMonitoring()">
+                <option value="">Semua Status</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Draft">Draft</option>
+                <option value="Selesai">Selesai</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="skm-table" id="monitoringTable">
+              <thead>
+                <tr>
+                  <th>Nama Survei</th>
+                  <th>Unit Layanan</th>
+                  <th>Status</th>
+                  <th>Response Rate & Capaian</th>
+                  <th>Periode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Survei Kepuasan Layanan KTP Elektronik & KK 2026</strong></td>
+                  <td>Disdukcapil Kota Serang</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <div class="progress-bar-container" style="flex:1;">
+                        <div class="progress-bar-fill" style="width: 62%;"></div>
+                      </div>
+                      <span style="font-weight:700; font-size:12px;">62% (238/385)</span>
+                    </div>
+                  </td>
+                  <td>01 Jan 2026 - 31 Des 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Survei Kepuasan Perizinan Usaha UMKM</strong></td>
+                  <td>Dinas PMPTSP</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <div class="progress-bar-container" style="flex:1;">
+                        <div class="progress-bar-fill" style="width: 43%;"></div>
+                      </div>
+                      <span style="font-weight:700; font-size:12px;">43% (145/333)</span>
+                    </div>
+                  </td>
+                  <td>01 Feb 2026 - 30 Jun 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Survei Kepuasan Rawat Jalan RSUD</strong></td>
+                  <td>RSUD Kota Serang</td>
+                  <td><span class="badge badge-warning">Draft</span></td>
+                  <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <div class="progress-bar-container" style="flex:1;">
+                        <div class="progress-bar-fill" style="width: 0%;"></div>
+                      </div>
+                      <span style="font-weight:700; font-size:12px;">0% (0/357)</span>
+                    </div>
+                  </td>
+                  <td>15 Jan 2026 - 15 Jul 2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function filterMonitoring() {
+      const search = document.getElementById('searchMon').value.toLowerCase();
+      const status = document.getElementById('statusMonFilter').value.toLowerCase();
+      const rows = document.querySelectorAll('#monitoringTable tbody tr');
+
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const matchesSearch = text.includes(search);
+        const matchesStatus = !status || text.includes(status);
+        r.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

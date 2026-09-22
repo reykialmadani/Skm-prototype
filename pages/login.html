@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Prototype Website SKM</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../assets/js/data.js"></script>
+</head>
+<body class="public-body" style="display:flex; align-items:center; justify-content:center; padding:20px;">
+
+  <div class="skm-card" style="width: 100%; max-width: 440px; padding: 36px 32px; box-shadow: var(--shadow-lg);">
+    <!-- Logo & Header -->
+    <div style="text-align: center; margin-bottom: 28px;">
+      <div style="width: 54px; height: 54px; background: var(--color-primary); color: #FFF; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; margin-bottom: 12px; box-shadow: var(--shadow-sm);">
+        SKM
+      </div>
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-text);">Masuk ke Portal SKM</h2>
+      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: 4px;">Sistem Informasi Survei Kepuasan Masyarakat</p>
+    </div>
+
+    <!-- Quick Role Fill Bar for Demo -->
+    <div style="background: var(--color-surface); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 20px;">
+      <div style="font-size: 11px; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 6px;">⚡ SIMULASI DEMO AKUN:</div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="btn btn-outline btn-sm" onclick="quickFillLogin('admin_unit')" style="font-size: 11px; padding: 4px 8px;">Admin Unit</button>
+        <button class="btn btn-outline btn-sm" onclick="quickFillLogin('super_admin')" style="font-size: 11px; padding: 4px 8px;">Super Admin</button>
+        <button class="btn btn-outline btn-sm" onclick="quickFillLogin('enumerator')" style="font-size: 11px; padding: 4px 8px;">Enumerator</button>
+      </div>
+    </div>
+
+    <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+      <div class="form-group">
+        <label for="emailInput">Username / Email</label>
+        <input type="text" id="emailInput" class="form-control" placeholder="Masukkan username atau email" value="budi.disdukcapil@go.id" required>
+      </div>
+
+      <div class="form-group">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <label for="passwordInput" style="margin-bottom:0;">Kata Sandi</label>
+          <a href="./forgot-password.html" style="font-size:12px;">Lupa password?</a>
+        </div>
+        <div style="position:relative;">
+          <input type="password" id="passwordInput" class="form-control" value="password123" required style="padding-right: 40px;">
+          <button type="button" onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--color-text-muted); cursor:pointer;">
+            <i data-lucide="eye" id="eyeIcon" style="width:18px; height:18px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group" style="display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" id="rememberMe" checked style="accent-color:var(--color-primary);">
+        <label for="rememberMe" style="font-size:12.5px; margin-bottom:0; font-weight:400; cursor:pointer;">Ingat saya di perangkat ini</label>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-primary btn-full btn-lg" style="margin-top:10px;">
+        <span>Masuk Sekarang</span>
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border-light);">
+      <p style="font-size: 12px; color: var(--color-text-muted);">
+        Ingin mengisi survei sebagai masyarakat? <a href="./public/landing.html" style="font-weight: 600;">Klik di sini</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    let selectedRole = 'admin_unit';
+
+    function quickFillLogin(role) {
+      selectedRole = role;
+      if (role === 'admin_unit') {
+        document.getElementById('emailInput').value = 'budi.disdukcapil@go.id';
+      } else if (role === 'super_admin') {
+        document.getElementById('emailInput').value = 'admin.indekstat@go.id';
+      } else if (role === 'enumerator') {
+        document.getElementById('emailInput').value = 'rizky.enumerator@go.id';
+      }
+      showToast(`Form diisi untuk role: ${role}`, 'info');
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('passwordInput');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        input.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.innerHTML = `<span>Memproses...</span>`;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        switchRoleDemo(selectedRole);
+      }, 600);
+    }
+  </script>
+</body>
+</html>

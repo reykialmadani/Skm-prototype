@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Unit Layanan — Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- Sidebar Unit Admin -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item active">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Dashboard Unit Layanan</h1>
+          <p>Selamat pagi, Pak Budi! Berikut ringkasan survei unitmu hari ini 👋</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="./survey-new.html" class="btn btn-primary btn-sm">
+            <i data-lucide="plus" style="width:16px;"></i> Buat Survei Baru
+          </a>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Summary Cards -->
+        <div class="grid-4">
+          <div class="metric-card">
+            <div class="metric-icon" style="background:var(--color-primary-subtle); color:var(--color-primary);"><i data-lucide="file-check-2"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">1</div>
+              <div class="metric-label">Survei Aktif Berjalan</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#EBF7EE; color:var(--color-success);"><i data-lucide="trending-up"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">62%</div>
+              <div class="metric-label">Rata-rata Response Rate</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#FEF9EB; color:var(--color-warning);"><i data-lucide="target"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">238 / 385</div>
+              <div class="metric-label">Sample Achievement</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background:#EFF6FF; color:var(--color-info);"><i data-lucide="check-circle-2"></i></div>
+            <div class="metric-data">
+              <div class="metric-value">80%</div>
+              <div class="metric-label">Kelengkapan Profil Layanan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workflow Banner Quick Navigation -->
+        <div class="skm-card" style="background: linear-gradient(135deg, var(--color-surface) 0%, #FFF5EB 100%); border: 1.5px solid var(--color-border-focus);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div>
+              <span class="badge badge-warning" style="margin-bottom:8px;">WORKFLOW SKM 4 TAHAP</span>
+              <h3 style="font-size:18px; font-weight:700; color:var(--color-primary-dark); margin-bottom:4px;">Lanjutkan Alur Pelaksanaan Survei Unit Anda</h3>
+              <p style="font-size:13px; color:var(--color-text-muted);">
+                Tahap 1 Identifikasi Bisnis & Tahap 2 Sampling sudah completed. Langkah berikutnya: <strong>Smart Survey Design</strong>.
+              </p>
+            </div>
+            <a href="./survey-new.html" class="btn btn-primary btn-lg">
+              Lanjutkan Ke Desain Survei <i data-lucide="arrow-right" style="width:18px;"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Surveys List Card -->
+        <div class="skm-card">
+          <div class="card-header">
+            <span class="card-title"><i data-lucide="list"></i> Daftar Survei Unit Ini</span>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="skm-table">
+              <thead>
+                <tr>
+                  <th>Nama Survei</th>
+                  <th>Periode Pelaksanaan</th>
+                  <th>Target Sampel</th>
+                  <th>Response Masuk</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Survei Kepuasan Layanan KTP Elektronik & KK 2026</strong><br>
+                    <span style="font-size:11.5px; color:var(--color-text-muted);">10 Pertanyaan • Smart Skip Logic Active</span>
+                  </td>
+                  <td>01 Jan 2026 - 31 Des 2026</td>
+                  <td>385 Responden</td>
+                  <td><strong style="color:var(--color-success);">238 Responden</strong> (62%)</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <div style="display:flex; gap:6px;">
+                      <a href="./survey-monitoring.html" class="btn btn-outline btn-sm"><i data-lucide="eye" style="width:14px;"></i> Monitor</a>
+                      <a href="./survey-generate.html" class="btn btn-secondary btn-sm"><i data-lucide="qr-code" style="width:14px;"></i> Kanal</a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Survei Kepuasan Layanan Akta Kelahiran & Kematian</strong><br>
+                    <span style="font-size:11.5px; color:var(--color-text-muted);">9 Pertanyaan Standar</span>
+                  </td>
+                  <td>15 Mar 2026 - 15 Sep 2026</td>
+                  <td>350 Responden</td>
+                  <td>0 Responden (0%)</td>
+                  <td><span class="badge badge-warning">Draft</span></td>
+                  <td>
+                    <a href="./survey-questions.html" class="btn btn-primary btn-sm"><i data-lucide="edit-3" style="width:14px;"></i> Edit Draft</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

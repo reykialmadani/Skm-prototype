@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Distribution — Admin SKM</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item active">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 4 — Survey Distribution Center</h1>
+          <p>Penyebaran tautan survei via WhatsApp, Email, SMS, dan Embed Website</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Tabs -->
+        <div style="display:flex; gap:10px; margin-bottom:20px; border-bottom:1px solid var(--color-border); padding-bottom:10px;">
+          <button class="btn btn-primary btn-sm" onclick="switchDistTab('waTab', this)">WhatsApp & Pesan Teks</button>
+          <button class="btn btn-outline btn-sm" onclick="switchDistTab('embedTab', this)">Embed Website</button>
+          <button class="btn btn-outline btn-sm" onclick="switchDistTab('emailTab', this)">Template Email</button>
+        </div>
+
+        <!-- Tab 1: WhatsApp Template + Chat Bubble Preview (PRD Section 8.2.6) -->
+        <div id="waTab" class="dist-tab-content">
+          <div class="grid-2">
+            <div class="skm-card">
+              <div class="card-header">
+                <span class="card-title"><i data-lucide="message-circle"></i> Template Pesan WhatsApp / Broadcast</span>
+              </div>
+              
+              <div class="form-group">
+                <label>Teks Template WhatsApp</label>
+                <textarea id="waTemplateText" class="form-control" rows="7" oninput="updateChatBubble()">Halo Bpk/Ibu {{nama_responden}}, terima kasih telah menggunakan layanan {{nama_layanan}} di Disdukcapil Kota Serang.
+
+Mohon kesediaannya mengisi survei kepuasan singkat (± 3 menit) melalui tautan berikut:
+{{link_survei}}
+
+Masukan Anda sangat berarti bagi peningkatan kualitas layanan kami. Terima kasih! 🙏</textarea>
+              </div>
+
+              <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary btn-sm" onclick="copyWaTemplate()"><i data-lucide="copy"></i> Salin Template WA</button>
+                <button class="btn btn-outline btn-sm" onclick="showToast('Simulasi WhatsApp API dikirim! 📲', 'info')"><i data-lucide="send"></i> Kirim Uji Coba</button>
+              </div>
+            </div>
+
+            <!-- WhatsApp Chat Bubble Preview (PRD Section 8.2.6) -->
+            <div class="skm-card">
+              <div class="card-header">
+                <span class="card-title"><i data-lucide="smartphone"></i> Preview Chat WhatsApp Responden</span>
+              </div>
+
+              <div class="chat-preview-container">
+                <div class="chat-bubble" id="chatBubbleContent">
+                  Halo Bpk/Ibu Responden, terima kasih telah menggunakan layanan KTP Elektronik & KK di Disdukcapil Kota Serang.<br><br>
+                  Mohon kesediaannya mengisi survei kepuasan singkat melalui tautan berikut:<br>
+                  <a href="../public/landing.html" target="_blank" style="color:#0645AD; font-weight:700;">http://skm.serangkota.go.id/s/ktp-2026</a><br><br>
+                  Masukan Anda sangat berarti. Terima kasih! 🙏
+                  <div style="font-size:10px; color:#666; text-align:right; margin-top:4px;">10:42 AM ✓✓</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Embed Code -->
+        <div id="embedTab" class="dist-tab-content" style="display:none;">
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="code"></i> Snippet Kode Embed iFrame Website</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--color-text-muted); margin-bottom:14px;">
+              Salin kode HTML iframe di bawah ini dan tempelkan pada website resmi instansi Anda:
+            </p>
+            <div class="form-group">
+              <textarea class="form-control" rows="4" readonly style="font-family:monospace; font-size:12px; background:var(--color-bg-alt);">&lt;iframe src="http://skm.serangkota.go.id/pages/public/survey-fill.html" width="100%" height="700" frameborder="0" style="border:none; border-radius:16px;"&gt;&lt;/iframe&gt;</textarea>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Kode Embed berhasil disalin! 📋', 'success')"><i data-lucide="copy"></i> Salin Snippet Embed HTML</button>
+          </div>
+        </div>
+
+        <!-- Tab 3: Email Template -->
+        <div id="emailTab" class="dist-tab-content" style="display:none;">
+          <div class="skm-card">
+            <div class="card-header">
+              <span class="card-title"><i data-lucide="mail"></i> Template Blast Email Resmi</span>
+            </div>
+            <div class="form-group">
+              <label>Subjek Email</label>
+              <input type="text" class="form-control" value="[Survei Kepuasan] Pendapat Anda Penting Bagi Disdukcapil Kota Serang">
+            </div>
+            <div class="form-group">
+              <label>Isi Email (HTML / Text)</label>
+              <textarea class="form-control" rows="5">Yth. Pengguna Layanan Disdukcapil,
+
+Dalam rangka meningkatkan mutu pelayanan publik, kami memohon waktu 3 menit Bapak/Ibu untuk mengisi Survei Kepuasan Masyarakat (SKM) 2026.
+
+Klik tautan berikut untuk memulai:
+http://skm.serangkota.go.id/s/ktp-2026
+
+Salam Hangat,
+Tim Penyelenggara Layanan Disdukcapil</textarea>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Template Email disalin! 📋', 'success')"><i data-lucide="copy"></i> Salin Email</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    function switchDistTab(tabId, btn) {
+      document.querySelectorAll('.dist-tab-content').forEach(el => el.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+
+      btn.closest('div').querySelectorAll('button').forEach(b => {
+        b.className = 'btn btn-outline btn-sm';
+      });
+      btn.className = 'btn btn-primary btn-sm';
+    }
+
+    function updateChatBubble() {
+      const text = document.getElementById('waTemplateText').value;
+      const formatted = text
+        .replace(/{{nama_responden}}/g, 'Bpk/Ibu Pengguna')
+        .replace(/{{nama_layanan}}/g, 'KTP Elektronik & KK')
+        .replace(/{{link_survei}}/g, '<a href="../public/landing.html" target="_blank" style="color:#0645AD; font-weight:700;">http://skm.serangkota.go.id/s/ktp-2026</a>')
+        .replace(/\n/g, '<br>');
+      
+      document.getElementById('chatBubbleContent').innerHTML = formatted + '<div style="font-size:10px; color:#666; text-align:right; margin-top:4px;">10:42 AM ✓✓</div>';
+    }
+
+    function copyWaTemplate() {
+      const text = document.getElementById('waTemplateText').value;
+      navigator.clipboard.writeText(text);
+      showToast('Template WhatsApp disalin! 📋', 'success');
+    }
+  </script>
+</body>
+</html>

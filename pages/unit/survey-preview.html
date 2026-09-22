@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Survey Design — Step 3 Preview Mobile Frame</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../assets/js/data.js"></script>
+  <script src="../../assets/js/components/stepper.js"></script>
+  <script src="../../assets/js/components/rating-scale.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" style="background:var(--color-primary);">SKM</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">Admin Unit Layanan</span>
+          <span class="sidebar-brand-sub">Disdukcapil Kota Serang</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">UTAMA</div>
+        <a href="./dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;"></i> Dashboard Unit
+        </a>
+
+        <div class="nav-section-title">ALUR WORKFLOW SKM</div>
+        <a href="./business-process.html" class="nav-item">
+          <i data-lucide="briefcase" style="width:18px;"></i> 1. Identifikasi Bisnis
+        </a>
+        <a href="./sampling.html" class="nav-item">
+          <i data-lucide="calculator" style="width:18px;"></i> 2. Sampling & Populasi
+        </a>
+        <a href="./survey-new.html" class="nav-item active">
+          <i data-lucide="sparkles" style="width:18px;"></i> 3. Smart Survey Design
+        </a>
+        <a href="./survey-generate.html" class="nav-item">
+          <i data-lucide="qr-code" style="width:18px;"></i> 4. Pembuatan Kanal (QR/Poster)
+        </a>
+        <a href="./survey-distribute.html" class="nav-item">
+          <i data-lucide="share-2" style="width:18px;"></i> 5. Distribusi Survei
+        </a>
+
+        <div class="nav-section-title">MONITORING</div>
+        <a href="./survey-monitoring.html" class="nav-item">
+          <i data-lucide="pie-chart" style="width:18px;"></i> Monitoring Respon Unit
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Drs. Budi Santoso</span>
+            <span class="user-role">Admin Disdukcapil</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-page-title">
+          <h1>Modul 3 — Smart Survey Design Wizard</h1>
+          <p>Langkah 3 dari 4: Preview interaktif tampilan kuesioner di layar smartphone (Mobile-First)</p>
+        </div>
+      </header>
+
+      <div class="content-area">
+        
+        <!-- Stepper -->
+        <div id="surveyWizardStepper"></div>
+
+        <div style="text-align:center; margin-bottom:16px;">
+          <span class="badge badge-info" style="font-size:12px; padding:6px 14px;">
+            📱 Simulasi Tampilan Ponsel (Lebar 375px) — Uji langsung pengalaman responden di bawah ini:
+          </span>
+        </div>
+
+        <!-- Mobile Frame Container -->
+        <div class="mobile-frame-container">
+          <div class="mobile-frame">
+            <div class="mobile-notch"></div>
+            
+            <div style="padding: 36px 20px 20px; font-family: var(--font-public);">
+              
+              <!-- Respondent Header Inside Mobile -->
+              <div style="text-align:center; margin-bottom:20px;">
+                <div style="width:40px; height:40px; background:var(--color-primary); color:#FFF; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; margin-bottom:8px;">
+                  SKM
+                </div>
+                <h3 style="font-size:15px; font-weight:700; color:var(--color-text);">Survei Layanan KTP & KK</h3>
+                <p style="font-size:11px; color:var(--color-text-muted);">Disdukcapil Kota Serang • 🔒 Anonim</p>
+              </div>
+
+              <!-- Question 1 Card -->
+              <div class="skm-card" style="padding:16px; margin-bottom:16px; border-radius:14px;">
+                <div style="font-size:11px; font-weight:700; color:var(--color-primary-dark); margin-bottom:4px;">PERTANYAAN 1 DARI 10</div>
+                <h4 style="font-size:13.5px; font-weight:700; color:var(--color-text); margin-bottom:12px;">
+                  Bagaimana pendapat Anda tentang kesesuaian persyaratan pelayanan KTP Elektronik & KK?
+                </h4>
+                
+                <!-- Emoji Scale Render -->
+                <div id="previewRatingContainer"></div>
+              </div>
+
+              <!-- Question 2 Card -->
+              <div class="skm-card" style="padding:16px; margin-bottom:16px; border-radius:14px;">
+                <div style="font-size:11px; font-weight:700; color:var(--color-primary-dark); margin-bottom:4px;">PERTANYAAN 2 DARI 10</div>
+                <h4 style="font-size:13.5px; font-weight:700; color:var(--color-text); margin-bottom:12px;">
+                  Bagaimana kemudahan prosedur dan alur antrean pelayanan di loket?
+                </h4>
+                
+                <div class="touch-card-radio">
+                  <input type="radio" name="p2" id="pr1">
+                  <label for="pr1" style="font-size:12px; cursor:pointer;">Sangat Mudah & Jelas</label>
+                </div>
+                <div class="touch-card-radio">
+                  <input type="radio" name="p2" id="pr2">
+                  <label for="pr2" style="font-size:12px; cursor:pointer;">Cukup Mudah</label>
+                </div>
+              </div>
+
+              <button class="btn btn-primary btn-full btn-lg" onclick="showToast('Tombol simulasi berfungsi dengan baik! 👍', 'info')">
+                Kirim Jawaban (Simulasi)
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Sticky Footer -->
+        <div class="sticky-action-bar">
+          <a href="./survey-questions.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Kembali ke Step 2</a>
+          <a href="./survey-publish.html" class="btn btn-primary btn-lg">
+            Lanjut ke Langkah 4: Publish Survei <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStepper('surveyWizardStepper', [
+        '1. Info Survei',
+        '2. Question Bank & Skip Logic',
+        '3. Preview Mobile Frame',
+        '4. Publish'
+      ], 2);
+
+      renderRatingScale('previewRatingContainer', (val) => {
+        showToast(`Nilai kepuasan terpilih: ${val} bintang / emoji`, 'success');
+      });
+    });
+  </script>
+</body>
+</html>
