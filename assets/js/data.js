@@ -14,10 +14,10 @@ const INITIAL_SKM_DATA = {
 
   // Role metadata for quick demo switcher
   roles: [
-    { id: "super_admin", label: "Super Admin", redirect: "/pages/admin/dashboard.html", user: "Indekstat SysAdmin" },
-    { id: "admin_unit", label: "Admin Unit Layanan", redirect: "/pages/unit/dashboard.html", user: "Drs. Budi Santoso, M.Si" },
-    { id: "enumerator", label: "Enumerator", redirect: "/pages/enumerator/dashboard.html", user: "Rizky Ramadhan" },
-    { id: "public", label: "Responden (Publik)", redirect: "/pages/public/landing.html", user: "Responden Umum" }
+    { id: "super_admin", label: "Super Admin", redirect: "./admin/dashboard.html", user: "Indekstat SysAdmin" },
+    { id: "admin_unit", label: "Admin Unit Layanan", redirect: "./unit/dashboard.html", user: "Drs. Budi Santoso, M.Si" },
+    { id: "enumerator", label: "Enumerator", redirect: "./enumerator/dashboard.html", user: "Rizky Ramadhan" },
+    { id: "public", label: "Responden (Publik)", redirect: "./public/landing.html", user: "Responden Umum" }
   ],
 
   // Master Unit Layanan
@@ -207,10 +207,19 @@ const INITIAL_SKM_DATA = {
   ]
 };
 
-// Initialize localStorage if not present
-if (!localStorage.getItem('SKM_APP_DATA')) {
-  localStorage.setItem('SKM_APP_DATA', JSON.stringify(INITIAL_SKM_DATA));
-}
+// Always sync localStorage with latest seed data structure
+// This ensures redirect paths and new fields are always up-to-date
+(function syncStoredData() {
+  const stored = localStorage.getItem('SKM_APP_DATA');
+  if (!stored) {
+    localStorage.setItem('SKM_APP_DATA', JSON.stringify(INITIAL_SKM_DATA));
+  } else {
+    // Merge: keep user-modified state (currentUser) but refresh role redirects & structure
+    const parsed = JSON.parse(stored);
+    parsed.roles = INITIAL_SKM_DATA.roles; // always sync redirect paths
+    localStorage.setItem('SKM_APP_DATA', JSON.stringify(parsed));
+  }
+})();
 
 function getStoredData() {
   const data = localStorage.getItem('SKM_APP_DATA');
