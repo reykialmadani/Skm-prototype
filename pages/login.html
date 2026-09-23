@@ -155,6 +155,14 @@
   <script>
     let activeRole = 'admin_unit';
 
+    // Hardcoded redirect map — relative to this login.html file location
+    const ROLE_REDIRECTS = {
+      super_admin: './admin/dashboard.html',
+      admin_unit: './unit/dashboard.html',
+      enumerator: './enumerator/dashboard.html',
+      public: './public/landing.html'
+    };
+
     function loginAsRole(roleId) {
       activeRole = roleId;
       const data = getStoredData();
@@ -168,7 +176,7 @@
 
       showToast(`Masuk sebagai: ${targetRole.label}`, 'success');
       setTimeout(() => {
-        window.location.href = targetRole.redirect;
+        window.location.href = ROLE_REDIRECTS[roleId] || './unit/dashboard.html';
       }, 500);
     }
 
